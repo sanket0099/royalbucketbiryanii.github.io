@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Bucket Biryani - Order Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Existing CSS --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Enables smooth scrolling for the whole page */
+        }
+        .font-fancy {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* --- New CSS for Animations --- */
+        /* Animation for elements to fade in and slide up on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Styling for the scroll-to-top button */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none; /* Hidden by default */
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold font-fancy text-amber-800">Royal Bucket Biryani</h1>
+            <a href="#order-now" class="bg-amber-600 text-white font-bold py-2 px-4 rounded-full hover:bg-amber-700 transition duration-300 shadow-lg">
+                Order Now
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-20 md:py-32">
+        <div class="container mx-auto text-center px-6">
+            <h2 class="text-4xl md:text-6xl font-bold font-fancy mb-4 leading-tight">A Taste of Royalty in Every Bite</h2>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Authentic spices, fragrant basmati rice, and generous portions, all served in our signature bucket.</p>
+            <p class="text-2xl md:text-3xl font-semibold mb-8">Biryanis Starting From Just ₹299!</p>
+            <a href="#order-now" class="bg-white text-amber-800 font-bold py-4 px-8 rounded-full text-lg hover:bg-gray-200 transition duration-300 transform hover:scale-105 shadow-xl inline-block">
+                👇 Choose How to Order
+            </a>
+        </div>
+    </section>
+    
+    <!-- NEW Order Online Section -->
+    <section id="order-now" class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-3xl md:text-4xl font-bold font-fancy mb-4 text-amber-900 reveal">Order Online Now!</h3>
+            <p class="text-gray-600 mb-10 max-w-xl mx-auto reveal">For the fastest delivery and secure online payment, please order through our official partners.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                <!-- Swiggy Button -->
+                <a href="#" target="_blank" class="w-full md:w-64 flex items-center justify-center gap-3 bg-orange-500 text-white font-bold py-4 px-6 rounded-lg text-xl hover:bg-orange-600 transition duration-300 transform hover:scale-105 shadow-lg reveal">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Swiggy_logo.svg/2560px-Swiggy_logo.svg.png" alt="Swiggy Logo" class="h-8">
+                </a>
+                <!-- Zomato Button -->
+                <a href="#" target="_blank" class="w-full md:w-64 flex items-center justify-center gap-3 bg-red-500 text-white font-bold py-4 px-6 rounded-lg text-xl hover:bg-red-600 transition duration-300 transform hover:scale-105 shadow-lg reveal">
+                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Zomato_logo.png/2560px-Zomato_logo.png" alt="Zomato Logo" class="h-8">
+                </a>
+                <!-- WhatsApp Button -->
+                 <a href="https://wa.me/919359848117?text=Hello%20Royal%20Bucket%20Biryani!%20I'd%20like%20to%20place%20an%20order." target="_blank" class="w-full md:w-64 flex items-center justify-center gap-3 bg-green-500 text-white font-bold py-4 px-6 rounded-lg text-xl hover:bg-green-600 transition duration-300 transform hover:scale-105 shadow-lg reveal">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR4n4ZZfsB7E7PV1NSmfLg3Rvcg4OOF5ukpg&s" alt="WhatsApp Logo" class="h-8">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-16 md:py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h3 class="text-3xl md:text-4xl font-bold font-fancy text-center mb-12 text-amber-900 reveal">Our Royal Menu</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Hyderabadi Chicken Dum Biryani -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300 reveal flex flex-col">
+                    <img src="https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Hyderabadi Chicken Dum Biryani" class="w-full h-56 object-cover">
+                    <div class="p-6 flex-grow">
+                        <h4 class="text-xl font-bold mb-2">Hyderabadi Chicken Dum Biryani</h4>
+                        <p class="text-gray-600 mb-4">The timeless classic. Tender chicken marinated in secret spices, layered with fragrant basmati rice.</p>
+                        <p class="text-lg font-bold text-amber-700">Starts at ₹299</p>
+                    </div>
+                    <div class="p-4 bg-gray-100">
+                        <a href="https://wa.me/919359848117?text=Hello!%20I%20would%20like%20to%20order:%0A%0AProduct:%20Hyderabadi%20Chicken%20Dum%20Biryani%0APrice:%20%E2%82%B9299" target="_blank" class="block w-full text-center bg-green-600 text-white font-bold py-2 px-4 rounded-full hover:bg-green-700 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR4n4ZZfsB7E7PV1NSmfLg3Rvcg4OOF5ukpg&s" alt="WhatsApp Logo" class="w-5 h-5">
+                            Order This
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Royal Mutton Dum Biryani -->
+                 <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300 reveal flex flex-col">
+                    <img src="https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Royal Mutton Dum Biryani" class="w-full h-56 object-cover">
+                    <div class="p-6 flex-grow">
+                        <h4 class="text-xl font-bold mb-2">Royal Mutton Dum Biryani</h4>
+                        <p class="text-gray-600 mb-4">Succulent pieces of mutton, slow-cooked in the traditional 'dum pukht' style. A true royal treat.</p>
+                        <p class="text-lg font-bold text-amber-700">Starts at ₹399</p>
+                    </div>
+                    <div class="p-4 bg-gray-100">
+                        <a href="https://wa.me/919359848117?text=Hello!%20I%20would%20like%20to%20order:%0A%0AProduct:%20Royal%20Mutton%20Dum%20Biryani%0APrice:%20%E2%82%B9399" target="_blank" class="block w-full text-center bg-green-600 text-white font-bold py-2 px-4 rounded-full hover:bg-green-700 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR4n4ZZfsB7E7PV1NSmfLg3Rvcg4OOF5ukpg&s" alt="WhatsApp Logo" class="w-5 h-5">
+                            Order This
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Chicken Tikka Biryani -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300 reveal flex flex-col">
+                    <img src="https://static.wixstatic.com/media/c47167_e9015843069a4c85af21284ec0adcb1e~mv2.webp/v1/fill/w_568,h_378,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/c47167_e9015843069a4c85af21284ec0adcb1e~mv2.webp" alt="Chicken Tikka Biryani" class="w-full h-56 object-cover">
+                    <div class="p-6 flex-grow">
+                        <h4 class="text-xl font-bold mb-2">Chicken Tikka Biryani</h4>
+                        <p class="text-gray-600 mb-4">Smoky and spicy boneless chicken tikka pieces grilled to perfection and layered in our biryani.</p>
+                        <p class="text-lg font-bold text-amber-700">Starts at ₹349</p>
+                    </div>
+                    <div class="p-4 bg-gray-100">
+                        <a href="https://wa.me/919359848117?text=Hello!%20I%20would%20like%20to%20order:%0A%0AProduct:%20Chicken%20Tikka%20Biryani%0APrice:%20%E2%82%B9349" target="_blank" class="block w-full text-center bg-green-600 text-white font-bold py-2 px-4 rounded-full hover:bg-green-700 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR4n4ZZfsB7E7PV1NSmfLg3Rvcg4OOF5ukpg&s" alt="WhatsApp Logo" class="w-5 h-5">
+                            Order This
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Paneer Makhani Biryani -->
+                 <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300 reveal flex flex-col">
+                    <img src="https://ministryofcurry.com/wp-content/uploads/2023/10/paneer-biryani_-9.jpg" alt="Paneer Makhani Biryani" class="w-full h-56 object-cover">
+                    <div class="p-6 flex-grow">
+                        <h4 class="text-xl font-bold mb-2">Paneer Makhani Biryani</h4>
+                        <p class="text-gray-600 mb-4">Soft cubes of paneer in a rich, creamy makhani gravy, layered with fragrant rice. A vegetarian's dream.</p>
+                        <p class="text-lg font-bold text-amber-700">Starts at ₹329</p>
+                    </div>
+                     <div class="p-4 bg-gray-100">
+                        <a href="https://wa.me/919359848117?text=Hello!%20I%20would%20like%20to%20order:%0A%0AProduct:%20Paneer%20Makhani%20Biryani%0APrice:%20%E2%82%B9329" target="_blank" class="block w-full text-center bg-green-600 text-white font-bold py-2 px-4 rounded-full hover:bg-green-700 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR4n4ZZfsB7E7PV1NSmfLg3Rvcg4OOF5ukpg&s" alt="WhatsApp Logo" class="w-5 h-5">
+                            Order This
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Egg Biryani -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300 reveal flex flex-col">
+                    <img src="https://ministryofcurry.com/wp-content/uploads/2019/11/egg-biryani-3-1.jpg" alt="Egg Biryani" class="w-full h-56 object-cover">
+                    <div class="p-6 flex-grow">
+                        <h4 class="text-xl font-bold mb-2">Egg Biryani</h4>
+                        <p class="text-gray-600 mb-4">Boiled eggs coated in a rich, spicy masala, served with our fragrant dum-cooked rice.</p>
+                        <p class="text-lg font-bold text-amber-700">Starts at ₹299</p>
+                    </div>
+                     <div class="p-4 bg-gray-100">
+                        <a href="https://wa.me/919359848117?text=Hello!%20I%20would%20like%20to%20order:%0A%0AProduct:%20Egg%20Biryani%0APrice:%20%E2%82%B9299" target="_blank" class="block w-full text-center bg-green-600 text-white font-bold py-2 px-4 rounded-full hover:bg-green-700 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR4n4ZZfsB7E7PV1NSmfLg3Rvcg4OOF5ukpg&s" alt="WhatsApp Logo" class="w-5 h-5">
+                            Order This
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="bg-gray-100 py-16 md:py-20">
+        <div class="container mx-auto px-6 text-center reveal">
+             <img src="https://i.ibb.co/7x9qL1Tx/Whats-App-Image-2025-09-02-at-1-44-39-PM.jpg" alt="Royal Bucket Biryani Founder" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-amber-600 shadow-xl object-cover">
+            <h3 class="text-3xl md:text-4xl font-bold font-fancy text-center mb-4 text-amber-900">From Our Founder</h3>
+            <p class="max-w-3xl mx-auto text-gray-700 mb-4">
+                "At Royal Bucket Biryani, our passion is to serve authentic, high-quality biryani that brings people together. We believe in using the finest ingredients and traditional recipes to ensure every meal is a celebration."
+            </p>
+            <p class="font-semibold text-lg">- Sanket Chaudhari, CEO</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold font-fancy mb-2">Royal Bucket Biryani</h3>
+            <p class="mb-4">Your bucket of happiness is just a click away!</p>
+            <p class="text-sm text-gray-400">&copy; 2024 Royal Bucket Biryani. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" class="bg-amber-600 text-white w-12 h-12 rounded-full hover:bg-amber-700 transition duration-300 shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+    
+    <!-- New JavaScript Section -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Feature 1: Reveal elements on scroll ---
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: stop observing once it's visible
+                        revealObserver.unobserve(entry.target); 
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            revealElements.forEach(el => {
+                revealObserver.observe(el);
+            });
+
+            // --- Feature 2: Show/Hide Scroll-to-Top Button ---
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) { // Show button after scrolling 300px
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+
+            // --- Feature 3: Smooth scroll to top on button click ---
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+
+
