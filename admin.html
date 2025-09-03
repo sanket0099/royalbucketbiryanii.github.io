@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Royal Bucket Biryani Orders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <style>
+        :root { --gold: #D4AF37; --dark-bg: #1a1a1a; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--dark-bg); color: #f0f0f0; }
+        .font-royal { font-family: 'Cinzel', serif; }
+        .order-card { background-color: #242424; border-left-width: 5px; transition: all 0.3s ease; }
+        .order-card.status-New { border-left-color: var(--gold); }
+        .order-card.status-Preparing { border-left-color: #3b82f6; }
+        .order-card.status-Out-for-Delivery { border-left-color: #fb923c; }
+        .order-card.status-Completed { border-left-color: #22c55e; opacity: 0.7; }
+        .status-btn { transition: background-color 0.2s; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-royal text-gold">Live Order Dashboard</h1>
+        <p class="text-gray-400 mt-2">New orders will appear here automatically with a sound notification.</p>
+    </header>
+
+    <main id="order-list" class="container mx-auto max-w-4xl space-y-4">
+        <p class="text-center text-gray-500">Listening for new orders...</p>
+    </main>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        
+        const firebaseConfig = {
+          apiKey: "AIzaSyC-aaMW97LNwlaMLm7zZkbOhcRHDq0aUcM",
+          authDomain: "royal-biryani-orders.firebaseapp.com",
+          projectId: "royal-biryani-orders",
+          storageBucket: "royal-biryani-orders.appspot.com",
+          messagingSenderId: "420687702254",
+          appId: "1:420687702254:web:0de3fd0fb7325810072bff",
+          measurementId: "G-59C82W0PX3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        const orderListEl = document.getElementById('order-list');
+        const synth = new Tone.Synth().toDestination();
+        let isFirstLoad = true;
+
+        const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+
+        onSnapshot(q, (snapshot) => {
+            if (isFirstLoad) {
+                 orderListEl.innerHTML = snapshot.docs.length > 0 ? '' : '<p class="text-center text-gray-500">No orders yet.</p>'; 
+                 snapshot.docs.forEach(doc => orderListEl.appendChild(createOrderCard(doc)));
+            }
+            
+            snapshot.docChanges().forEach((change) => {
+                if (!isFirstLoad) {
+                    if (change.type === "added") {
+                        if(document.visibilityState === 'visible') {
+                            synth.triggerAttackRelease("C5", "8n");
+                        }
+                        orderListEl.prepend(createOrderCard(change.doc));
+                    }
+                    if (change.type === "modified") {
+                        const oldCard = document.getElementById(change.doc.id);
+                        if(oldCard) oldCard.replaceWith(createOrderCard(change.doc));
+                    }
+                }
+            });
+            isFirstLoad = false;
+        });
+        
+        function createOrderCard(doc) {
+            const order = doc.data();
+            const card = document.createElement('div');
+            card.id = doc.id;
+            card.className = order-card status-${order.status.replace(/\s+/g, '-')} rounded-lg p-4 shadow-lg;
+            const itemsHtml = order.cartItems.map(item => <li class="flex justify-between"><span>${item.name} (x${item.quantity})</span><span>₹${item.price * item.quantity}</span></li>).join('');
+            const time = order.timestamp ? new Date(order.timestamp.seconds * 1000).toLocaleTimeString('en-IN', { hour: '2-digit', minute:'2-digit'}) : 'N/A';
+            const flashSaleTag = order.isFlashSaleOrder ? '<span class="text-xs font-bold bg-yellow-500 text-black px-2 py-1 rounded-full ml-2">FLASH SALE</span>' : '';
+
+            card.innerHTML = `
+                <div class="flex justify-between items-center"><div><p class="font-bold text-lg flex items-center">${order.customerName} ${flashSaleTag}</p><p class="text-sm text-gray-400">${order.customerMobile}</p></div><div class="text-right"><p class="text-2xl font-royal text-gold">₹${order.totalAmount}</p><p class="text-xs text-gray-500">${time}</p></div></div>
+                <div class="mt-4 border-t border-gray-700 pt-4"><p class="font-semibold mb-2">Items:</p><ul class="space-y-1 text-sm text-gray-300">${itemsHtml}</ul></div>
+                <div class="mt-4 border-t border-gray-700 pt-4"><p class="font-semibold mb-2">Delivery Address:</p><p class="text-sm text-gray-300">${order.addressInfo.address}</p>${order.addressInfo.mapLink !== 'Not available' ? <a href="${order.addressInfo.mapLink}" target="_blank" class="text-xs text-blue-400 hover:underline">View on Google Maps</a> : ''}</div>
+                <div class="mt-4 border-t border-gray-700 pt-4"><p class="font-semibold mb-2">Status: <span class="font-bold">${order.status}</span></p><div class="flex flex-wrap gap-2 mt-2">
+                    <button data-id="${doc.id}" data-status="Preparing" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Preparing' ? 'bg-blue-600' : 'bg-gray-600 hover:bg-blue-500'}">Preparing</button>
+                    <button data-id="${doc.id}" data-status="Out for Delivery" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Out for Delivery' ? 'bg-orange-500' : 'bg-gray-600 hover:bg-orange-400'}">Out for Delivery</button>
+                    <button data-id="${doc.id}" data-status="Completed" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Completed' ? 'bg-green-600' : 'bg-gray-600 hover:bg-green-500'}">Completed</button>
+                </div></div>`;
+            return card;
+        }
+
+        orderListEl.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('status-btn')) {
+                const orderId = e.target.dataset.id;
+                const newStatus = e.target.dataset.status;
+                try {
+                    await updateDoc(doc(db, "orders", orderId), { status: newStatus });
+                } catch (err) { console.error("Error updating status: ", err); }
+            }
+        });
+    </script>
+</body>
+</html>
