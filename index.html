@@ -120,7 +120,7 @@
         </div>
     </section>
     
-    <!-- About Us Section (RESTORED) -->
+    <!-- About Us Section -->
     <section id="about" class="py-20">
         <div class="container mx-auto px-6 text-center flex flex-col items-center">
              <img src="https://i.ibb.co/7x9qL1Tx/Whats-App-Image-2025-09-02-at-1-44-39-PM.jpg" alt="Royal Bucket Biryani Founder" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-gold shadow-2xl object-cover">
@@ -161,29 +161,29 @@
     <!-- Cart Modal -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-container">
-            <!-- Order View -->
-            <div id="order-view">
-                <div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-royal text-gold">Your Royal Order</h3><button id="close-modal-btn" class="text-2xl text-gray-400 hover:text-gold">&times;</button></div>
+            <!-- Details View -->
+            <div id="details-view">
+                <div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-royal text-gold">Your Order Details</h3><button id="close-modal-btn" class="text-2xl text-gray-400 hover:text-gold">&times;</button></div>
                 <div id="cart-items-container" class="mb-4"></div>
                 <div class="space-y-2 mb-4"><div class="flex justify-between items-center bg-black p-4 rounded-lg border-t-2 border-gold"><p class="text-xl font-semibold">Total Amount:</p><p id="total-amount" class="text-2xl font-bold text-gold">₹0</p></div></div>
                 <div class="space-y-4 border-t-2 border-dashed border-gold pt-4">
                     <p class="text-center text-lg text-gold font-royal">Enter Your Details</p>
                     <input type="text" id="customer-name" placeholder="Enter Your Full Name" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
                     <input type="tel" id="customer-mobile" placeholder="Enter Your Mobile Number" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
-                    <div id="address-section" class="text-center p-2 rounded-lg bg-black">
+                    <div class="text-center p-2 rounded-lg bg-black">
                         <button id="get-location-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-lg btn-royal">ADD DELIVERY ADDRESS</button>
                         <div id="location-status" class="text-sm text-yellow-400 mt-2 h-4"></div>
                         <div id="manual-address-section" class="hidden mt-2"><textarea id="manual-address-input" rows="2" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-2" placeholder="Enter your full address here..."></textarea><button id="confirm-manual-address-btn" class="w-full mt-2 bg-gold-gradient text-black font-bold py-2 rounded-full btn-royal">Confirm Manual Address</button></div>
                     </div>
-                    <button id="place-order-btn" class="w-full bg-gray-500 cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-lg transition-colors duration-300" disabled>PLACE ORDER</button>
+                    <button id="proceed-to-pay-btn" class="w-full bg-gray-500 cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-lg transition-colors duration-300" disabled>PROCEED TO PAYMENT</button>
                 </div>
             </div>
-            <!-- Success View -->
-            <div id="success-view" class="hidden text-center">
-                 <h3 class="text-4xl font-royal text-green-400 mb-4">Order Placed Successfully!</h3>
-                 <p class="text-gray-300 mb-6">Your order is sent to our kitchen. Please complete the payment below.</p>
+            <!-- Payment View -->
+            <div id="payment-view" class="hidden text-center">
+                 <h3 class="text-3xl font-royal text-gold mb-4">Complete Your Payment</h3>
+                 <p class="text-gray-300 mb-6">Please complete payment. After paying, you MUST click the final button below to confirm your order.</p>
                  <div class="p-4 rounded-lg bg-black border border-dashed border-gold">
-                    <h4 class="text-xl font-royal text-gold mb-4">Complete Your Payment</h4>
+                    <h4 class="text-xl font-royal text-gold mb-4">Payment Options</h4>
                     <div class="flex items-center justify-center gap-4 mb-3">
                         <img src="https://i.ibb.co/Xr7HZ6ms/Google-Pay-QR-2.png" alt="UPI QR Code" class="rounded-lg w-32 h-32">
                         <div>
@@ -191,9 +191,10 @@
                            <p class="text-sm text-gray-400 mt-2">Scan QR or use UPI ID</p>
                         </div>
                     </div>
-                    <a id="pay-btn-link-success" href="#" class="w-full bg-gold-gradient text-black font-bold py-3 px-6 rounded-full text-lg btn-royal inline-block mt-4">PAY WITH GPAY/PHONEPE</a>
+                    <a id="pay-btn-link" href="#" class="w-full bg-gold-gradient text-black font-bold py-3 px-6 rounded-full text-lg btn-royal inline-block mt-4">PAY WITH GPAY/PHONEPE</a>
                  </div>
-                 <button id="close-success-btn" class="mt-6 text-gray-400 underline">Close</button>
+                 <button id="confirm-order-btn" class="w-full mt-6 bg-green-500 text-white font-bold py-4 px-10 rounded-full text-lg btn-royal">CONFIRM & PLACE ORDER (After Paying)</button>
+                 <button id="back-to-details-btn" class="mt-4 text-gray-400 underline">Go Back</button>
             </div>
         </div>
     </div>
@@ -204,12 +205,7 @@
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         
         // --- App State ---
-        const AppState = {
-            db: null,
-            cart: [],
-            deliveryAddressInfo: null,
-            isOfferActive: false,
-        };
+        const AppState = { db: null, cart: [], deliveryAddressInfo: null, isOfferActive: false };
 
         // --- UI Elements ---
         const UIElements = {
@@ -229,11 +225,12 @@
             confirmManualAddressBtn: document.getElementById('confirm-manual-address-btn'),
             customerName: document.getElementById('customer-name'),
             customerMobile: document.getElementById('customer-mobile'),
-            placeOrderBtn: document.getElementById('place-order-btn'),
-            orderView: document.getElementById('order-view'),
-            successView: document.getElementById('success-view'),
-            payBtnLinkSuccess: document.getElementById('pay-btn-link-success'),
-            closeSuccessBtn: document.getElementById('close-success-btn'),
+            proceedToPayBtn: document.getElementById('proceed-to-pay-btn'),
+            detailsView: document.getElementById('details-view'),
+            paymentView: document.getElementById('payment-view'),
+            payBtnLink: document.getElementById('pay-btn-link'),
+            confirmOrderBtn: document.getElementById('confirm-order-btn'),
+            backToDetailsBtn: document.getElementById('back-to-details-btn'),
         };
 
         // --- Main App Logic ---
@@ -244,235 +241,197 @@
                 this.initMap();
                 this.initializeFlashSale();
             },
-
             initFirebase() {
                 try {
-                    const firebaseConfig = {
-                        apiKey: "AIzaSyC-aaMW97LNwlaMLm7zZkbOhcRHDq0aUcM",
-                        authDomain: "royal-biryani-orders.firebaseapp.com",
-                        projectId: "royal-biryani-orders",
-                        storageBucket: "royal-biryani-orders.appspot.com",
-                        messagingSenderId: "420687702254",
-                        appId: "1:420687702254:web:0de3fd0fb7325810072bff"
-                    };
+                    const firebaseConfig = {"apiKey":"AIzaSyC-aaMW97LNwlaMLm7zZkbOhcRHDq0aUcM","authDomain":"royal-biryani-orders.firebaseapp.com","projectId":"royal-biryani-orders","storageBucket":"royal-biryani-orders.appspot.com","messagingSenderId":"420687702254","appId":"1:420687702254:web:0de3fd0fb7325810072bff"};
                     const app = initializeApp(firebaseConfig);
                     AppState.db = getFirestore(app);
-                } catch (error) {
-                    console.error("Firebase initialization failed:", error);
-                    alert("Could not connect to the ordering service. Please try again later.");
-                }
+                } catch (e) { console.error("Firebase failed:", e); }
             },
-
             bindEvents() {
-                UIElements.addToCartButtons.forEach(button => button.addEventListener('click', this.handleAddToCart.bind(this)));
+                UIElements.addToCartButtons.forEach(btn => btn.addEventListener('click', this.handleAddToCart.bind(this)));
                 UIElements.viewCartBtn.addEventListener('click', this.openCartModal.bind(this));
                 UIElements.closeModalBtn.addEventListener('click', this.resetModal.bind(this));
-                UIElements.closeSuccessBtn.addEventListener('click', this.resetModal.bind(this));
                 UIElements.cartModal.addEventListener('click', (e) => { if (e.target === UIElements.cartModal) this.resetModal(); });
                 UIElements.getLocationBtn.addEventListener('click', this.handleGetLocation.bind(this));
                 UIElements.confirmManualAddressBtn.addEventListener('click', this.confirmManualAddress.bind(this));
-                [UIElements.customerName, UIElements.customerMobile].forEach(el => el.addEventListener('input', this.validateOrderButton.bind(this)));
-                UIElements.placeOrderBtn.addEventListener('click', this.placeOrder.bind(this));
+                [UIElements.customerName, UIElements.customerMobile].forEach(el => el.addEventListener('input', this.validateProceedButton.bind(this)));
+                UIElements.proceedToPayBtn.addEventListener('click', this.showPaymentView.bind(this));
+                UIElements.backToDetailsBtn.addEventListener('click', this.showDetailsView.bind(this));
+                UIElements.confirmOrderBtn.addEventListener('click', this.confirmOrder.bind(this));
             },
-
             initMap() {
                 const map = L.map('map').setView([18.5975, 73.9112], 17);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
                 L.marker([18.5975, 73.9112], {icon: L.icon({ iconUrl: 'https://img.icons8.com/ios-filled/50/D4AF37/crown.png', iconSize: [40, 40], iconAnchor: [20, 40], popupAnchor: [0, -40] })}).addTo(map).bindPopup('<b style="color: #1a1a1a;">Royal Bucket Biryani</b>').openPopup();
             },
-
             initializeFlashSale() {
-                let offerEndTime = localStorage.getItem('offerEndTime');
-                if (!offerEndTime) {
-                    offerEndTime = new Date().getTime() + 24 * 60 * 60 * 1000;
-                    localStorage.setItem('offerEndTime', offerEndTime);
-                }
-                const timerInterval = setInterval(() => {
-                    const distance = offerEndTime - new Date().getTime();
-                    if (distance < 0) {
-                        clearInterval(timerInterval);
+                let endTime = localStorage.getItem('offerEndTime') || (Date.now() + 24 * 36e5);
+                localStorage.setItem('offerEndTime', endTime);
+                const timer = setInterval(() => {
+                    const dist = endTime - Date.now();
+                    if (dist < 0) {
+                        clearInterval(timer);
                         AppState.isOfferActive = false;
                         UIElements.specialOfferSection.style.display = 'none';
-                        this.resetPricesToOriginal();
-                        return;
+                        this.resetPricesToOriginal(); return;
                     }
                     AppState.isOfferActive = true;
                     UIElements.specialOfferSection.style.display = 'block';
-                    const h = String(Math.floor((distance / 36e5) % 24)).padStart(2, '0'), m = String(Math.floor((distance / 6e4) % 60)).padStart(2, '0'), s = String(Math.floor((distance / 1e3) % 60)).padStart(2, '0');
+                    const h = String(Math.floor((dist / 36e5) % 24)).padStart(2, '0'), m = String(Math.floor((dist / 6e4) % 60)).padStart(2, '0'), s = String(Math.floor((dist / 1e3) % 60)).padStart(2, '0');
                     UIElements.countdownTimer.innerHTML = `<div class="text-center"><div class="text-4xl font-royal">${h}</div><div class="text-sm">Hours</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${m}</div><div class="text-sm">Minutes</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${s}</div><div class="text-sm">Seconds</div></div>`;
                 }, 1000);
-                if (new Date().getTime() < offerEndTime) this.activateOfferPrices();
+                if (Date.now() < endTime) this.activateOfferPrices();
             },
-            
             activateOfferPrices() {
-                AppState.isOfferActive = true;
                 document.querySelectorAll('.menu-card').forEach(card => {
-                    const originalPriceEl = card.querySelector('.original-price');
-                    const offerPriceEl = card.querySelector('.offer-price');
-                    const originalPriceValue = card.querySelector('.add-to-cart-btn').dataset.priceOriginal;
-                    originalPriceEl.textContent = `₹${originalPriceValue}`;
+                    const originalPriceEl = card.querySelector('.original-price'), offerPriceEl = card.querySelector('.offer-price'), btn = card.querySelector('.add-to-cart-btn');
+                    originalPriceEl.textContent = `₹${btn.dataset.priceOriginal}`;
                     originalPriceEl.classList.remove('hidden');
                     offerPriceEl.textContent = '₹1';
                 });
             },
-            
             resetPricesToOriginal() {
-                AppState.isOfferActive = false;
                 document.querySelectorAll('.menu-card').forEach(card => {
-                    const originalPriceValue = card.querySelector('.add-to-cart-btn').dataset.priceOriginal;
-                    if (originalPriceValue) {
-                        card.querySelector('.offer-price').textContent = `₹${originalPriceValue}`;
-                        card.querySelector('.original-price').classList.add('hidden');
-                    }
+                    const btn = card.querySelector('.add-to-cart-btn');
+                    card.querySelector('.offer-price').textContent = `₹${btn.dataset.priceOriginal}`;
+                    card.querySelector('.original-price').classList.add('hidden');
                 });
             },
-            
-            calculateTotal() { return AppState.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); },
-
+            calculateTotal() { return AppState.cart.reduce((s, i) => s + (i.price * i.quantity), 0); },
             updateCartUI() {
                 const total = this.calculateTotal();
-                UIElements.cartCount.textContent = AppState.cart.reduce((sum, item) => sum + item.quantity, 0);
+                UIElements.cartCount.textContent = AppState.cart.reduce((s, i) => s + i.quantity, 0);
                 UIElements.totalAmount.textContent = `₹${total}`;
                 if (AppState.cart.length === 0) {
                     UIElements.cartItemsContainer.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
                 } else {
                     UIElements.cartItemsContainer.innerHTML = '';
                     AppState.cart.forEach((item, index) => {
-                        const itemEl = document.createElement('div');
-                        itemEl.className = 'cart-item py-2 flex justify-between items-center';
-                        itemEl.innerHTML = `<div><p class="font-semibold text-white">${item.name}</p><p class="text-sm text-gray-400">₹${item.price} x ${item.quantity}</p></div><div class="flex items-center gap-2"><button class="remove-item-btn text-red-500 font-bold px-2 rounded" data-index="${index}">-</button><span class="font-bold text-lg text-gold">₹${item.price * item.quantity}</span></div>`;
-                        UIElements.cartItemsContainer.appendChild(itemEl);
+                        const el = document.createElement('div');
+                        el.className = 'cart-item py-2 flex justify-between items-center';
+                        el.innerHTML = `<div><p class="font-semibold text-white">${item.name}</p><p class="text-sm text-gray-400">₹${item.price} x ${item.quantity}</p></div><div class="flex items-center gap-2"><button class="remove-item-btn text-red-500 font-bold px-2 rounded" data-index="${index}">-</button><span class="font-bold text-lg text-gold">₹${item.price * item.quantity}</span></div>`;
+                        UIElements.cartItemsContainer.appendChild(el);
                     });
-                    UIElements.cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(btn => btn.addEventListener('click', (e) => this.removeItemFromCart(e.target.dataset.index)));
+                    UIElements.cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(b => b.addEventListener('click', (e) => this.removeItemFromCart(e.target.dataset.index)));
                 }
-                this.validateOrderButton();
+                this.validateProceedButton();
             },
-            
             handleAddToCart(e) {
-                const button = e.target;
-                const name = button.dataset.name;
-                const price = AppState.isOfferActive ? 1 : parseInt(button.dataset.priceOriginal);
-                const existingItem = AppState.cart.find(item => item.name === name);
-                if (existingItem) existingItem.quantity++;
+                const { name, priceOriginal } = e.target.dataset;
+                const price = AppState.isOfferActive ? 1 : parseInt(priceOriginal);
+                const item = AppState.cart.find(i => i.name === name);
+                if (item) item.quantity++;
                 else AppState.cart.push({ name, price, quantity: 1 });
                 this.updateCartUI();
-                button.textContent = 'Added!';
-                setTimeout(() => { button.textContent = 'Add to Cart'; }, 1000);
+                e.target.textContent = 'Added!';
+                setTimeout(() => { e.target.textContent = 'Add to Cart'; }, 1000);
             },
-            
             removeItemFromCart(index) {
                 if (AppState.cart[index].quantity > 1) AppState.cart[index].quantity--;
                 else AppState.cart.splice(index, 1);
                 this.updateCartUI();
             },
-            
             handleGetLocation() {
-                UIElements.locationStatus.textContent = "Fetching your location...";
+                UIElements.locationStatus.textContent = "Fetching location...";
                 navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        const { latitude, longitude } = position.coords;
+                    async (pos) => {
+                        const { latitude, longitude } = pos.coords;
                         try {
-                            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                            const data = await response.json();
+                            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                            const data = await res.json();
                             if (data && data.display_name) this.setAddress({ address: data.display_name, mapLink: `https://www.google.com/maps?q=${latitude},${longitude}` });
                             else throw new Error();
-                        } catch (error) { this.handleLocationError("Could not fetch address. Please enter manually."); }
+                        } catch (e) { this.handleLocationError("Could not fetch address. Please enter manually."); }
                     },
                     () => this.handleLocationError("Location access denied. Please allow location or enter manually below.")
                 );
             },
-            
-            handleLocationError(message) {
-                UIElements.locationStatus.textContent = message;
+            handleLocationError(msg) {
+                UIElements.locationStatus.textContent = msg;
                 UIElements.manualAddressSection.classList.remove('hidden');
             },
-            
             confirmManualAddress() {
-                const manualAddress = UIElements.manualAddressInput.value.trim();
-                if (manualAddress) this.setAddress({ address: manualAddress, mapLink: 'Not available' });
-                else UIElements.locationStatus.textContent = "Please enter your address.";
+                const addr = UIElements.manualAddressInput.value.trim();
+                if (addr) this.setAddress({ address: addr, mapLink: 'Not available' });
+                else UIElements.locationStatus.textContent = "Please enter address.";
             },
-            
-            setAddress(addressInfo) {
-                AppState.deliveryAddressInfo = addressInfo;
+            setAddress(addrInfo) {
+                AppState.deliveryAddressInfo = addrInfo;
                 UIElements.locationStatus.textContent = "Address Confirmed!";
                 UIElements.locationStatus.classList.add('text-green-400');
                 UIElements.getLocationBtn.textContent = 'ADDRESS CONFIRMED';
                 UIElements.getLocationBtn.disabled = true;
                 UIElements.manualAddressSection.classList.add('hidden');
-                this.validateOrderButton();
+                this.validateProceedButton();
             },
-            
-            validateOrderButton() {
-                const { customerName, customerMobile, placeOrderBtn } = UIElements;
-                const name = customerName.value.trim();
-                const mobile = customerMobile.value.trim();
+            validateProceedButton() {
+                const { customerName, customerMobile, proceedToPayBtn } = UIElements;
+                const name = customerName.value.trim(), mobile = customerMobile.value.trim();
                 if (AppState.cart.length > 0 && AppState.deliveryAddressInfo && name && mobile.length >= 10) {
-                    placeOrderBtn.disabled = false;
-                    placeOrderBtn.classList.remove('bg-gray-500', 'cursor-not-allowed');
-                    placeOrderBtn.classList.add('bg-green-500', 'btn-royal');
+                    proceedToPayBtn.disabled = false;
+                    proceedToPayBtn.classList.remove('bg-gray-500', 'cursor-not-allowed');
+                    proceedToPayBtn.classList.add('bg-gold-gradient', 'text-black', 'btn-royal');
                 } else {
-                    placeOrderBtn.disabled = true;
-                    placeOrderBtn.classList.add('bg-gray-500', 'cursor-not-allowed');
-                    placeOrderBtn.classList.remove('bg-green-500', 'btn-royal');
+                    proceedToPayBtn.disabled = true;
+                    proceedToPayBtn.classList.add('bg-gray-500', 'cursor-not-allowed');
+                    proceedToPayBtn.classList.remove('bg-gold-gradient', 'text-black', 'btn-royal');
                 }
             },
-            
-            async placeOrder() {
-                if (UIElements.placeOrderBtn.disabled || !AppState.db) return;
-                UIElements.placeOrderBtn.textContent = "Placing Order...";
-                UIElements.placeOrderBtn.disabled = true;
+            showPaymentView() {
+                UIElements.detailsView.classList.add('hidden');
+                UIElements.paymentView.classList.remove('hidden');
+                const total = this.calculateTotal();
+                UIElements.payBtnLink.href = `upi://pay?pa=sanketchaudhari224-2@oksbi&pn=Royal%20Bucket%20Biryani&am=${total}&cu=INR&tn=Order`;
+            },
+            showDetailsView() {
+                UIElements.paymentView.classList.add('hidden');
+                UIElements.detailsView.classList.remove('hidden');
+            },
+            async confirmOrder() {
+                if (UIElements.confirmOrderBtn.disabled || !AppState.db) return;
+                UIElements.confirmOrderBtn.textContent = "Placing Order...";
+                UIElements.confirmOrderBtn.disabled = true;
                 const total = this.calculateTotal();
                 const orderData = {
                     customerName: UIElements.customerName.value.trim(),
                     customerMobile: UIElements.customerMobile.value.trim(),
                     addressInfo: AppState.deliveryAddressInfo,
-                    cartItems: AppState.cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
-                    totalAmount: total,
-                    status: "New",
-                    timestamp: serverTimestamp(),
-                    isFlashSaleOrder: AppState.isOfferActive
+                    cartItems: AppState.cart,
+                    totalAmount: total, status: "New", timestamp: serverTimestamp(), isFlashSaleOrder: AppState.isOfferActive
                 };
                 try {
                     await addDoc(collection(AppState.db, "orders"), orderData);
-                    UIElements.orderView.classList.add('hidden');
-                    UIElements.successView.classList.remove('hidden');
-                    UIElements.payBtnLinkSuccess.href = `upi://pay?pa=sanketchaudhari224-2@oksbi&pn=Royal%20Bucket%20Biryani&am=${total}&cu=INR&tn=Order`;
+                    alert("Order Placed Successfully!");
+                    this.resetModal();
                 } catch (e) {
                     alert("Could not place order. Please try again.");
-                    UIElements.placeOrderBtn.textContent = "PLACE ORDER";
-                    this.validateOrderButton();
+                    UIElements.confirmOrderBtn.textContent = "CONFIRM & PLACE ORDER (After Paying)";
+                    UIElements.confirmOrderBtn.disabled = false;
                 }
             },
-            
             openCartModal() {
                 this.updateCartUI();
                 UIElements.cartModal.classList.add('active');
             },
-
             resetModal() {
                 UIElements.cartModal.classList.remove('active');
                 setTimeout(() => {
                     AppState.cart.length = 0;
                     AppState.deliveryAddressInfo = null;
                     this.updateCartUI();
-                    UIElements.customerName.value = '';
-                    UIElements.customerMobile.value = '';
+                    ['customerName', 'customerMobile', 'manualAddressInput'].forEach(k => UIElements[k].value = '');
                     UIElements.locationStatus.textContent = "";
                     UIElements.locationStatus.classList.remove('text-green-400');
                     UIElements.getLocationBtn.textContent = 'ADD DELIVERY ADDRESS';
                     UIElements.getLocationBtn.disabled = false;
                     UIElements.manualAddressSection.classList.add('hidden');
-                    UIElements.manualAddressInput.value = '';
-                    UIElements.successView.classList.add('hidden');
-                    UIElements.orderView.classList.remove('hidden');
-                    UIElements.placeOrderBtn.textContent = "PLACE ORDER";
+                    this.showDetailsView();
                 }, 500);
             }
         };
 
         App.init();
-
     </script>
 </body>
 </html>
