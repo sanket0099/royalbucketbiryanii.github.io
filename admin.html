@@ -3,38 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Royal Bucket Biryani Orders</title>
+    <title>Admin Panel - Royal Bucket Biryani</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
-        :root { --gold: #D4AF37; --dark-bg: #1a1a1a; }
+        :root { --gold: #D4AF37; --dark-bg: #1a1a1a; --card-bg: #242424; }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--dark-bg); color: #f0f0f0; }
         .font-royal { font-family: 'Cinzel', serif; }
-        .order-card { background-color: #242424; border-left-width: 5px; transition: all 0.3s ease; }
+        .bg-gold-gradient { background-image: linear-gradient(to right, #D4AF37, #C0982E, #D4AF37); }
+        .btn-royal:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3); }
+        .order-card { background-color: var(--card-bg); border-left-width: 5px; transition: all 0.3s ease; }
         .order-card.status-New { border-left-color: var(--gold); }
         .order-card.status-Preparing { border-left-color: #3b82f6; }
         .order-card.status-Out-for-Delivery { border-left-color: #fb923c; }
         .order-card.status-Completed { border-left-color: #22c55e; opacity: 0.7; }
         .status-btn { transition: background-color 0.2s; }
+        .stat-card { background-color: var(--card-bg); border-bottom: 4px solid var(--gold);}
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <header class="text-center mb-8">
-        <h1 class="text-4xl md:text-5xl font-royal text-gold">Live Order Dashboard</h1>
-        <p class="text-gray-400 mt-2">New orders will appear here automatically with a sound notification.</p>
-    </header>
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center bg-black bg-opacity-50">
+        <div class="w-full max-w-md p-8 space-y-6 bg-card-bg rounded-2xl shadow-lg border-t-4 border-gold">
+            <div class="text-center">
+                <h1 class="text-3xl font-royal text-gold">Admin Login</h1>
+                <p class="text-gray-400">Royal Bucket Biryani</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="email" class="text-sm font-medium text-gray-300">Email Address</label>
+                    <input type="email" id="email" class="w-full mt-1 p-3 bg-[#333] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gold" placeholder="admin@example.com">
+                </div>
+                <div>
+                    <label for="password" class="text-sm font-medium text-gray-300">Password</label>
+                    <input type="password" id="password" class="w-full mt-1 p-3 bg-[#333] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gold" placeholder="••••••••">
+                </div>
+            </div>
+            <p id="login-error" class="text-sm text-red-500 h-4 text-center"></p>
+            <button id="login-btn" class="w-full bg-gold-gradient text-black font-bold py-3 px-10 rounded-full text-lg btn-royal">
+                Login Securely
+            </button>
+        </div>
+    </div>
 
-    <main id="order-list" class="container mx-auto max-w-4xl space-y-4">
-        <p class="text-center text-gray-500">Listening for new orders...</p>
-    </main>
+    <!-- Dashboard Screen (Initially hidden) -->
+    <div id="dashboard-screen" class="hidden p-4 md:p-8">
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-royal text-gold">Live Dashboard</h1>
+            <button id="logout-btn" class="text-sm font-semibold bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-full transition-colors">Logout</button>
+        </header>
+
+        <!-- Stats Section -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="stat-card p-6 rounded-lg shadow-lg text-center">
+                <p class="text-sm text-gray-400 uppercase">Today's Orders</p>
+                <p id="today-orders-stat" class="text-5xl font-royal text-white mt-2">0</p>
+            </div>
+            <div class="stat-card p-6 rounded-lg shadow-lg text-center">
+                <p class="text-sm text-gray-400 uppercase">Total Revenue</p>
+                <p id="total-revenue-stat" class="text-5xl font-royal text-white mt-2">₹0</p>
+            </div>
+            <div class="stat-card p-6 rounded-lg shadow-lg text-center">
+                <p class="text-sm text-gray-400 uppercase">Total Orders</p>
+                <p id="total-orders-stat" class="text-5xl font-royal text-white mt-2">0</p>
+            </div>
+        </section>
+
+        <main id="order-list" class="container mx-auto max-w-4xl space-y-4">
+            <p class="text-center text-gray-500">Listening for new orders...</p>
+        </main>
+    </div>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         
         const firebaseConfig = {
           apiKey: "AIzaSyC-aaMW97LNwlaMLm7zZkbOhcRHDq0aUcM",
@@ -42,33 +89,60 @@
           projectId: "royal-biryani-orders",
           storageBucket: "royal-biryani-orders.appspot.com",
           messagingSenderId: "420687702254",
-          appId: "1:420687702254:web:0de3fd0fb7325810072bff",
-          measurementId: "G-59C82W0PX3"
+          appId: "1:420687702254:web:0de3fd0fb7325810072bff"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
         
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginError = document.getElementById('login-error');
         const orderListEl = document.getElementById('order-list');
         const synth = new Tone.Synth().toDestination();
         let isFirstLoad = true;
+        let unsubscribe;
 
-        const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
-
-        onSnapshot(q, (snapshot) => {
-            if (isFirstLoad && snapshot.docs.length > 0) {
-                 orderListEl.innerHTML = '';
-                 snapshot.docs.forEach(doc => orderListEl.appendChild(createOrderCard(doc)));
-            } else if (isFirstLoad) {
-                 orderListEl.innerHTML = '<p class="text-center text-gray-500">No orders yet.</p>';
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                loginScreen.style.display = 'none';
+                dashboardScreen.style.display = 'block';
+                listenForOrders();
+            } else {
+                dashboardScreen.style.display = 'none';
+                loginScreen.style.display = 'flex';
+                if (unsubscribe) unsubscribe();
             }
-            
-            snapshot.docChanges().forEach((change) => {
-                if (!isFirstLoad) {
-                    if (change.type === "added") {
-                        if(document.visibilityState === 'visible') {
-                            try { synth.triggerAttackRelease("C5", "8n"); } catch(e) {}
-                        }
+        });
+
+        loginBtn.addEventListener('click', () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            loginError.textContent = '';
+            signInWithEmailAndPassword(auth, email, password)
+                .catch(error => { loginError.textContent = 'Invalid email or password.'; });
+        });
+
+        logoutBtn.addEventListener('click', () => { signOut(auth); });
+
+        function listenForOrders() {
+            const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                updateStats(snapshot.docs);
+                if (isFirstLoad && snapshot.docs.length > 0) {
+                     orderListEl.innerHTML = '';
+                     snapshot.docs.forEach(doc => orderListEl.appendChild(createOrderCard(doc)));
+                } else if (isFirstLoad) {
+                     orderListEl.innerHTML = '<p class="text-center text-gray-500">No orders yet.</p>';
+                }
+                snapshot.docChanges().forEach((change) => {
+                    if (!isFirstLoad && change.type === "added") {
+                        if(document.visibilityState === 'visible') try { synth.triggerAttackRelease("C5", "8n"); } catch(e) {}
                         if(orderListEl.querySelector('p')) orderListEl.innerHTML = '';
                         orderListEl.prepend(createOrderCard(change.doc));
                     }
@@ -76,10 +150,26 @@
                         const oldCard = document.getElementById(change.doc.id);
                         if(oldCard) oldCard.replaceWith(createOrderCard(change.doc));
                     }
+                });
+                isFirstLoad = false;
+            });
+        }
+
+        function updateStats(docs) {
+            const today = new Date().setHours(0,0,0,0);
+            let todayOrders = 0;
+            let totalRevenue = 0;
+            docs.forEach(doc => {
+                const order = doc.data();
+                totalRevenue += order.totalAmount;
+                if (order.timestamp && order.timestamp.toDate() >= today) {
+                    todayOrders++;
                 }
             });
-            isFirstLoad = false;
-        });
+            document.getElementById('today-orders-stat').textContent = todayOrders;
+            document.getElementById('total-revenue-stat').textContent = `₹${totalRevenue}`;
+            document.getElementById('total-orders-stat').textContent = docs.length;
+        }
         
         function createOrderCard(doc) {
             const order = doc.data();
