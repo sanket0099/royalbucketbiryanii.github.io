@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         :root { --gold: #D4AF37; --dark-bg: #1a1a1a; }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--dark-bg); color: #f0f0f0; }
@@ -33,39 +33,19 @@
     <header class="bg-black bg-opacity-80 backdrop-blur-sm shadow-lg sticky top-0 z-50">
          <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <h1 class="text-2xl md:text-3xl font-royal text-gold">Royal Bucket Biryani</h1>
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#menu" class="text-gray-300 hover:text-gold transition font-semibold">The Menu</a>
-                <a href="#location" class="text-gray-300 hover:text-gold transition font-semibold">Visit Us</a>
-            </nav>
-            <button id="view-cart-btn" class="bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal flex items-center">
-                View Cart <span id="cart-count" class="ml-2 bg-black text-gold rounded-full px-2 text-sm">0</span>
-            </button>
+            <nav class="hidden md:flex items-center space-x-8"><a href="#menu" class="text-gray-300 hover:text-gold transition font-semibold">The Menu</a><a href="#location" class="text-gray-300 hover:text-gold transition font-semibold">Visit Us</a></nav>
+            <button id="view-cart-btn" class="bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal flex items-center">View Cart <span id="cart-count" class="ml-2 bg-black text-gold rounded-full px-2 text-sm">0</span></button>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero-bg text-white min-h-screen flex items-center">
-         <div class="container mx-auto text-center px-6">
-            <h2 class="text-5xl md:text-7xl font-royal text-gold mb-4 leading-tight">Experience a Royal Feast</h2>
-            <p class="text-lg md:text-xl mb-6 max-w-2xl mx-auto text-gray-200">Discover the lost recipes of the royal kitchens, slow-cooked to perfection and delivered in our signature bucket.</p>
-            <br>
-            <a href="#menu" class="bg-gold-gradient text-black font-bold py-4 px-10 rounded-full text-lg btn-royal inline-block">
-                Explore The Menu
-            </a>
-        </div>
+         <div class="container mx-auto text-center px-6"><h2 class="text-5xl md:text-7xl font-royal text-gold mb-4 leading-tight">Experience a Royal Feast</h2><p class="text-lg md:text-xl mb-6 max-w-2xl mx-auto text-gray-200">Discover the lost recipes of the royal kitchens, slow-cooked to perfection.</p><br><a href="#menu" class="bg-gold-gradient text-black font-bold py-4 px-10 rounded-full text-lg btn-royal inline-block">Explore The Menu</a></div>
     </section>
     
     <!-- Today's Special Offer Section -->
     <section id="special-offer" class="py-12 bg-black text-center border-y-4 border-dashed border-gold hidden">
-        <div class="container mx-auto px-6">
-            <h3 class="text-4xl font-royal text-gold mb-4">Today's Royal Flash Sale!</h3>
-            <p class="text-xl text-gray-200 mb-6">For a limited time, enjoy any Biryani for just</p>
-            <p class="text-8xl font-royal text-white mb-6">₹1</p>
-            <div id="countdown-timer" class="flex justify-center space-x-2 md:space-x-6 text-white mb-8"></div>
-            <a href="#menu" class="bg-gold-gradient text-black font-bold py-3 px-8 rounded-full text-lg btn-royal inline-block">
-                Grab The Deal Now!
-            </a>
-        </div>
+        <div class="container mx-auto px-6"><h3 class="text-4xl font-royal text-gold mb-4">Today's Royal Flash Sale!</h3><p class="text-xl text-gray-200 mb-6">Enjoy any Biryani for just</p><p class="text-8xl font-royal text-white mb-6">₹1</p><div id="countdown-timer" class="flex justify-center space-x-2 md:space-x-6 text-white mb-8"></div><a href="#menu" class="bg-gold-gradient text-black font-bold py-3 px-8 rounded-full text-lg btn-royal inline-block">Grab The Deal Now!</a></div>
     </section>
 
     <!-- Menu Section -->
@@ -73,198 +53,126 @@
         <div class="container mx-auto px-6">
             <h3 class="text-4xl font-royal text-gold text-center mb-16 relative inline-block underline-gold">The Royal Menu</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                 <!-- Menu items -->
-                <div class="menu-card rounded-lg overflow-hidden transition-transform">
-                    <img src="https://dms.mydukaan.io/original/jpeg/media/bc64ef84-658f-4eee-845d-dc87227624ea.jpg" alt="Hydrabadi chicken biryani" class="w-full h-64 object-cover">
-                    <div class="p-6 flex flex-col justify-between" style="height: 18rem;">
-                        <div><h4 class="text-2xl font-royal text-gold mb-2">Hydrabadi chicken biryani</h4><p class="text-gray-400 mb-4">Authentic dum-pukht style.</p></div>
-                        <div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹299</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Hydrabadi chicken biryani" data-price-original="299">Add to Cart</button></div>
-                    </div>
-                </div>
-                 <div class="menu-card rounded-lg overflow-hidden transition-transform">
-                    <img src="https://dms.mydukaan.io/original/jpeg/media/bb3b112c-0089-4275-b32a-9e3b7d7aacf5.jpg" alt="Royal mutton biryani" class="w-full h-64 object-cover">
-                     <div class="p-6 flex flex-col justify-between" style="height: 18rem;">
-                        <div><h4 class="text-2xl font-royal text-gold mb-2">Royal mutton biryani</h4><p class="text-gray-400 mb-4">Fall-off-the-bone mutton.</p></div>
-                        <div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹399</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Royal mutton biryani" data-price-original="399">Add to Cart</button></div>
-                    </div>
-                </div>
-                 <div class="menu-card rounded-lg overflow-hidden transition-transform">
-                    <img src="https://dms.mydukaan.io/original/jpeg/media/27649d2b-5272-4483-b4ca-e962fbf08d88.webp" alt="Chiken tikka biryani" class="w-full h-64 object-cover">
-                     <div class="p-6 flex flex-col justify-between" style="height: 18rem;">
-                        <div><h4 class="text-2xl font-royal text-gold mb-2">Chiken tikka biryani</h4><p class="text-gray-400 mb-4">Smoky tikka and spicy masala.</p></div>
-                        <div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹349</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Chiken tikka biryani" data-price-original="349">Add to Cart</button></div>
-                    </div>
-                </div>
-                 <div class="menu-card rounded-lg overflow-hidden transition-transform">
-                    <img src="https://dms.mydukaan.io/original/jpeg/media/a9318b87-57e5-4da6-9b92-1f18842926b8.jpg" alt="Subz-E-Biryani (Veg)" class="w-full h-64 object-cover">
-                     <div class="p-6 flex flex-col justify-between" style="height: 18rem;">
-                        <div><h4 class="text-2xl font-royal text-gold mb-2">Subz-E-Biryani (Veg)</h4><p class="text-gray-400 mb-4">Vibrant exotic vegetables.</p></div>
-                        <div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹299</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Subz-E-Biryani (Veg)" data-price-original="299">Add to Cart</button></div>
-                    </div>
-                </div>
-                <div class="menu-card rounded-lg overflow-hidden transition-transform">
-                    <img src="https://dms.mydukaan.io/original/jpeg/media/337348b4-14f7-4ed6-b92d-6407ebbf7551.jpg" alt="Paneer Makhani Biryani" class="w-full h-64 object-cover">
-                     <div class="p-6 flex flex-col justify-between" style="height: 18rem;">
-                        <div><h4 class="text-2xl font-royal text-gold mb-2">Paneer Makhani Biryani</h4><p class="text-gray-400 mb-4">Rich, creamy, and mildly sweet.</p></div>
-                        <div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹329</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Paneer Makhani Biryani" data-price-original="329">Add to Cart</button></div>
-                    </div>
-                </div>
-                <div class="menu-card rounded-lg overflow-hidden transition-transform">
-                    <img src="https://dms.mydukaan.io/original/jpeg/media/e8d6858a-1947-496b-bcf2-2ee53f0be1af.jpg" alt="Egg Biryani" class="w-full h-64 object-cover">
-                     <div class="p-6 flex flex-col justify-between" style="height: 18rem;">
-                        <div><h4 class="text-2xl font-royal text-gold mb-2">Egg Biryani</h4><p class="text-gray-400 mb-4">Masala-roasted eggs.</p></div>
-                        <div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹299</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Egg Biryani" data-price-original="299">Add to Cart</button></div>
-                    </div>
-                </div>
+                <div class="menu-card rounded-lg overflow-hidden transition-transform"><img src="https://dms.mydukaan.io/original/jpeg/media/bc64ef84-658f-4eee-845d-dc87227624ea.jpg" class="w-full h-64 object-cover"><div class="p-6 flex flex-col justify-between" style="height: 18rem;"><div><h4 class="text-2xl font-royal text-gold mb-2">Hydrabadi chicken biryani</h4><p class="text-gray-400 mb-4">Authentic dum-pukht style.</p></div><div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹299</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Hydrabadi chicken biryani" data-price-original="299">Add to Cart</button></div></div></div>
+                <div class="menu-card rounded-lg overflow-hidden transition-transform"><img src="https://dms.mydukaan.io/original/jpeg/media/bb3b112c-0089-4275-b32a-9e3b7d7aacf5.jpg" class="w-full h-64 object-cover"><div class="p-6 flex flex-col justify-between" style="height: 18rem;"><div><h4 class="text-2xl font-royal text-gold mb-2">Royal mutton biryani</h4><p class="text-gray-400 mb-4">Fall-off-the-bone mutton.</p></div><div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹399</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Royal mutton biryani" data-price-original="399">Add to Cart</button></div></div></div>
+                <div class="menu-card rounded-lg overflow-hidden transition-transform"><img src="https://dms.mydukaan.io/original/jpeg/media/27649d2b-5272-4483-b4ca-e962fbf08d88.webp" class="w-full h-64 object-cover"><div class="p-6 flex flex-col justify-between" style="height: 18rem;"><div><h4 class="text-2xl font-royal text-gold mb-2">Chiken tikka biryani</h4><p class="text-gray-400 mb-4">Smoky tikka and spicy masala.</p></div><div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹349</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Chiken tikka biryani" data-price-original="349">Add to Cart</button></div></div></div>
+                <div class="menu-card rounded-lg overflow-hidden transition-transform"><img src="https://dms.mydukaan.io/original/jpeg/media/a9318b87-57e5-4da6-9b92-1f18842926b8.jpg" class="w-full h-64 object-cover"><div class="p-6 flex flex-col justify-between" style="height: 18rem;"><div><h4 class="text-2xl font-royal text-gold mb-2">Subz-E-Biryani (Veg)</h4><p class="text-gray-400 mb-4">Vibrant exotic vegetables.</p></div><div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹299</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Subz-E-Biryani (Veg)" data-price-original="299">Add to Cart</button></div></div></div>
+                <div class="menu-card rounded-lg overflow-hidden transition-transform"><img src="https://dms.mydukaan.io/original/jpeg/media/337348b4-14f7-4ed6-b92d-6407ebbf7551.jpg" class="w-full h-64 object-cover"><div class="p-6 flex flex-col justify-between" style="height: 18rem;"><div><h4 class="text-2xl font-royal text-gold mb-2">Paneer Makhani Biryani</h4><p class="text-gray-400 mb-4">Rich, creamy, and mildly sweet.</p></div><div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹329</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Paneer Makhani Biryani" data-price-original="329">Add to Cart</button></div></div></div>
+                <div class="menu-card rounded-lg overflow-hidden transition-transform"><img src="https://dms.mydukaan.io/original/jpeg/media/e8d6858a-1947-496b-bcf2-2ee53f0be1af.jpg" class="w-full h-64 object-cover"><div class="p-6 flex flex-col justify-between" style="height: 18rem;"><div><h4 class="text-2xl font-royal text-gold mb-2">Egg Biryani</h4><p class="text-gray-400 mb-4">Masala-roasted eggs.</p></div><div class="flex justify-between items-center mt-auto"><p class="text-xl font-semibold text-white"><s class="original-price text-gray-500 mr-2 hidden"></s><span class="offer-price">₹299</span></p><button class="add-to-cart-btn bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal text-sm" data-name="Egg Biryani" data-price-original="299">Add to Cart</button></div></div></div>
             </div>
         </div>
     </section>
     
     <!-- About Us Section -->
     <section id="about" class="py-20">
-        <div class="container mx-auto px-6 text-center flex flex-col items-center">
-             <img src="https://i.ibb.co/7x9qL1Tx/Whats-App-Image-2025-09-02-at-1-44-39-PM.jpg" alt="Royal Bucket Biryani Founder" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-gold shadow-2xl object-cover">
-            <h3 class="text-4xl font-royal text-gold text-center mb-4">From The Royal Kitchen</h3>
-             <p class="max-w-3xl mx-auto text-gray-300 mb-4 text-lg">
-                "At Royal Bucket Biryani, our passion is to revive the authentic flavours that once graced the tables of kings. Each grain of rice and every spice is a part of a story we wish to share with you."
-            </p>
-            <p class="font-semibold text-lg text-gold">- Sanket Chaudhari, Founder</p>
-        </div>
+        <div class="container mx-auto px-6 text-center flex flex-col items-center"><img src="https://i.ibb.co/7x9qL1Tx/Whats-App-Image-2025-09-02-at-1-44-39-PM.jpg" alt="Founder" class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-gold shadow-2xl object-cover"><h3 class="text-4xl font-royal text-gold text-center mb-4">From The Royal Kitchen</h3><p class="max-w-3xl mx-auto text-gray-300 mb-4 text-lg">"At Royal Bucket Biryani, our passion is to revive the authentic flavours that once graced the tables of kings."</p><p class="font-semibold text-lg text-gold">- Sanket Chaudhari, Founder</p></div>
     </section>
 
     <!-- Location Section -->
     <section id="location" class="py-20 bg-black bg-opacity-30">
-        <div class="container mx-auto px-6">
-            <h3 class="text-4xl font-royal text-gold text-center mb-16 relative inline-block underline-gold">Visit The Royal Kitchen</h3>
-            <div class="grid md:grid-cols-2 gap-10 items-center bg-[#242424] p-8 rounded-lg border border-[#333]">
-                <div class="text-center md:text-left">
-                    <h4 class="text-3xl font-royal text-gold mb-4">Find Us In Pune</h4>
-                    <p class="text-gray-300 text-lg mb-4">Sahyadri Building, Sai Satyam Park, <br> Lane No 8, Khandvenagar, <br> Pune, Maharashtra 412207</p>
-                    <p class="text-gray-300 text-lg mb-6"><strong>Phone:</strong> <a href="tel:+919359848117" class="hover:text-gold transition">+91 93598 48117</a></p>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=18.5975,73.9112" target="_blank" class="bg-gold-gradient text-black font-bold py-3 px-8 rounded-full text-md btn-royal inline-block">Get Directions</a>
-                </div>
-                <div><div id="map"></div></div>
-            </div>
-        </div>
+        <div class="container mx-auto px-6"><h3 class="text-4xl font-royal text-gold text-center mb-16 relative inline-block underline-gold">Visit The Royal Kitchen</h3><div class="grid md:grid-cols-2 gap-10 items-center bg-[#242424] p-8 rounded-lg border border-[#333]"><div class="text-center md:text-left"><h4 class="text-3xl font-royal text-gold mb-4">Find Us In Pune</h4><p class="text-gray-300 text-lg mb-4">Sahyadri Building, Sai Satyam Park, <br> Lane No 8, Khandvenagar, <br> Pune, Maharashtra 412207</p><p class="text-gray-300 text-lg mb-6"><strong>Phone:</strong> <a href="tel:+919359848117" class="hover:text-gold transition">+91 93598 48117</a></p><a href="https://www.google.com/maps/dir/?api=1&destination=18.5975,73.9112" target="_blank" class="bg-gold-gradient text-black font-bold py-3 px-8 rounded-full text-md btn-royal inline-block">Get Directions</a></div><div><div id="map"></div></div></div></div>
     </section>
 
     <!-- Footer -->
     <footer class="bg-black py-10">
-        <div class="container mx-auto px-6 text-center text-gray-400">
-            <h3 class="text-3xl font-royal text-gold mb-2">Royal Bucket Biryani</h3>
-            <p class="mb-6">A Royal Indulgence in Every Bite.</p>
-            <p class="font-semibold text-lg mb-6">For Orders & Inquiries: <a href="https://wa.me/9172068117?text=Hello%20Royal%20Bucket%20Biryani!" target="_blank" class="text-gold hover:underline">Chat on WhatsApp</a></p>
-            <p class="text-sm">&copy; 2025 Royal Bucket Biryani. Crafted with Royalty.</p>
-        </div>
+        <div class="container mx-auto px-6 text-center text-gray-400"><h3 class="text-3xl font-royal text-gold mb-2">Royal Bucket Biryani</h3><p class="mb-6">A Royal Indulgence in Every Bite.</p><p class="font-semibold text-lg mb-6">For Orders & Inquiries: <a href="https://wa.me/9172068117?text=Hello%20Royal%20Bucket%20Biryani!" target="_blank" class="text-gold hover:underline">Chat on WhatsApp</a></p><p class="text-sm">&copy; 2025 Royal Bucket Biryani.</p></div>
     </footer>
 
     <!-- Cart Modal -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-container">
-            <!-- Details View -->
-            <div id="details-view">
-                <div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-royal text-gold">Your Order Details</h3><button id="close-modal-btn" class="text-2xl text-gray-400 hover:text-gold">&times;</button></div>
-                <div id="cart-items-container" class="mb-4"></div>
-                <div class="space-y-2 mb-4"><div class="flex justify-between items-center bg-black p-4 rounded-lg border-t-2 border-gold"><p class="text-xl font-semibold">Total Amount:</p><p id="total-amount" class="text-2xl font-bold text-gold">₹0</p></div></div>
-                <div class="space-y-4 border-t-2 border-dashed border-gold pt-4">
-                    <p class="text-center text-lg text-gold font-royal">Enter Your Details</p>
-                    <input type="text" id="customer-name" placeholder="Enter Your Full Name" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
-                    <input type="tel" id="customer-mobile" placeholder="Enter Your Mobile Number" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
-                    <div class="text-center p-2 rounded-lg bg-black">
-                        <button id="get-location-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-lg btn-royal">ADD DELIVERY ADDRESS</button>
-                        <div id="location-status" class="text-sm text-yellow-400 mt-2 h-4"></div>
-                        <div id="manual-address-section" class="hidden mt-2"><textarea id="manual-address-input" rows="2" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-2" placeholder="Enter your full address here..."></textarea><button id="confirm-manual-address-btn" class="w-full mt-2 bg-gold-gradient text-black font-bold py-2 rounded-full btn-royal">Confirm Manual Address</button></div>
-                    </div>
-                    <button id="proceed-to-pay-btn" class="w-full bg-gray-500 cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-lg transition-colors duration-300" disabled>PROCEED TO PAYMENT</button>
+            <div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-royal text-gold">Your Order</h3><button id="close-modal-btn" class="text-2xl text-gray-400 hover:text-gold">&times;</button></div>
+            <div id="cart-items-container" class="mb-4"></div>
+            <div class="space-y-2 mb-4"><div class="flex justify-between items-center bg-black p-4 rounded-lg border-t-2 border-gold"><p class="text-xl font-semibold">Total Amount:</p><p id="total-amount" class="text-2xl font-bold text-gold">₹0</p></div></div>
+            <div class="space-y-3 border-t-2 border-dashed border-gold pt-4">
+                <p class="text-center text-lg text-gold font-royal">Enter Your Details to Proceed</p>
+                <input type="text" id="customer-name" placeholder="* Enter Your Full Name" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
+                <input type="tel" id="customer-mobile" placeholder="* Enter Your Mobile Number" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
+                <div class="text-center p-2 rounded-lg bg-black">
+                    <button id="get-location-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-lg btn-royal">* ADD DELIVERY ADDRESS</button>
+                    <div id="location-status" class="text-sm text-yellow-400 mt-2 h-4"></div>
+                    <div id="manual-address-section" class="hidden mt-2"><textarea id="manual-address-input" rows="2" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-2" placeholder="Enter your full address here..."></textarea><button id="confirm-manual-address-btn" class="w-full mt-2 bg-gold-gradient text-black font-bold py-2 rounded-full btn-royal">Confirm Manual Address</button></div>
                 </div>
-            </div>
-            <!-- Payment View -->
-            <div id="payment-view" class="hidden text-center">
-                 <h3 class="text-3xl font-royal text-gold mb-4">Complete Your Payment</h3>
-                 <p class="text-gray-300 mb-6">Please complete payment. After paying, you MUST click the final button below to confirm your order.</p>
-                 <div class="p-4 rounded-lg bg-black border border-dashed border-gold">
-                    <h4 class="text-xl font-royal text-gold mb-4">Payment Options</h4>
-                    <div class="flex items-center justify-center gap-4 mb-3">
-                        <img src="https://i.ibb.co/Xr7HZ6ms/Google-Pay-QR-2.png" alt="UPI QR Code" class="rounded-lg w-32 h-32">
-                        <div>
-                           <p class="text-lg font-bold text-gold bg-[#333] px-4 py-2 rounded-md">sanketchaudhari224-2@oksbi</p>
-                           <p class="text-sm text-gray-400 mt-2">Scan QR or use UPI ID</p>
-                        </div>
-                    </div>
-                    <a id="pay-btn-link" href="#" class="w-full bg-gold-gradient text-black font-bold py-3 px-6 rounded-full text-lg btn-royal inline-block mt-4">PAY WITH GPAY/PHONEPE</a>
-                 </div>
-                 <button id="confirm-order-btn" class="w-full mt-6 bg-green-500 text-white font-bold py-4 px-10 rounded-full text-lg btn-royal">CONFIRM & PLACE ORDER (After Paying)</button>
-                 <button id="back-to-details-btn" class="mt-4 text-gray-400 underline">Go Back</button>
+                <button id="place-order-btn" class="w-full bg-gray-500 cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-lg transition-colors duration-300" disabled>PLACE ORDER & PAY</button>
             </div>
         </div>
     </div>
     
+    <!-- Tawk.to Live Chat -->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/68b6f2358b5f3419254f375f/1j45a495s';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    
     <script type="module">
-        // --- Firebase Imports ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         
-        // --- App State ---
-        const AppState = { db: null, cart: [], deliveryAddressInfo: null, isOfferActive: false };
-
-        // --- UI Elements ---
-        const UIElements = {
-            cartCount: document.getElementById('cart-count'),
-            addToCartButtons: document.querySelectorAll('.add-to-cart-btn'),
-            viewCartBtn: document.getElementById('view-cart-btn'),
-            cartModal: document.getElementById('cart-modal'),
-            closeModalBtn: document.getElementById('close-modal-btn'),
-            cartItemsContainer: document.getElementById('cart-items-container'),
-            totalAmount: document.getElementById('total-amount'),
-            specialOfferSection: document.getElementById('special-offer'),
-            countdownTimer: document.getElementById('countdown-timer'),
-            getLocationBtn: document.getElementById('get-location-btn'),
-            locationStatus: document.getElementById('location-status'),
-            manualAddressSection: document.getElementById('manual-address-section'),
-            manualAddressInput: document.getElementById('manual-address-input'),
-            confirmManualAddressBtn: document.getElementById('confirm-manual-address-btn'),
-            customerName: document.getElementById('customer-name'),
-            customerMobile: document.getElementById('customer-mobile'),
-            proceedToPayBtn: document.getElementById('proceed-to-pay-btn'),
-            detailsView: document.getElementById('details-view'),
-            paymentView: document.getElementById('payment-view'),
-            payBtnLink: document.getElementById('pay-btn-link'),
-            confirmOrderBtn: document.getElementById('confirm-order-btn'),
-            backToDetailsBtn: document.getElementById('back-to-details-btn'),
-        };
-
-        // --- Main App Logic ---
         const App = {
+            db: null, cart: [], deliveryAddressInfo: null, isOfferActive: false,
+            
             init() {
-                this.initFirebase();
+                this.cacheDOMElements();
                 this.bindEvents();
+                this.initFirebase();
                 this.initMap();
                 this.initializeFlashSale();
             },
+            
+            cacheDOMElements() {
+                this.UI = {
+                    cartCount: document.getElementById('cart-count'),
+                    addToCartButtons: document.querySelectorAll('.add-to-cart-btn'),
+                    viewCartBtn: document.getElementById('view-cart-btn'),
+                    cartModal: document.getElementById('cart-modal'),
+                    closeModalBtn: document.getElementById('close-modal-btn'),
+                    cartItemsContainer: document.getElementById('cart-items-container'),
+                    totalAmount: document.getElementById('total-amount'),
+                    specialOfferSection: document.getElementById('special-offer'),
+                    countdownTimer: document.getElementById('countdown-timer'),
+                    getLocationBtn: document.getElementById('get-location-btn'),
+                    locationStatus: document.getElementById('location-status'),
+                    manualAddressSection: document.getElementById('manual-address-section'),
+                    manualAddressInput: document.getElementById('manual-address-input'),
+                    confirmManualAddressBtn: document.getElementById('confirm-manual-address-btn'),
+                    customerName: document.getElementById('customer-name'),
+                    customerMobile: document.getElementById('customer-mobile'),
+                    placeOrderBtn: document.getElementById('place-order-btn'),
+                };
+            },
+            
             initFirebase() {
                 try {
                     const firebaseConfig = {"apiKey":"AIzaSyC-aaMW97LNwlaMLm7zZkbOhcRHDq0aUcM","authDomain":"royal-biryani-orders.firebaseapp.com","projectId":"royal-biryani-orders","storageBucket":"royal-biryani-orders.appspot.com","messagingSenderId":"420687702254","appId":"1:420687702254:web:0de3fd0fb7325810072bff"};
                     const app = initializeApp(firebaseConfig);
-                    AppState.db = getFirestore(app);
-                } catch (e) { console.error("Firebase failed:", e); }
+                    this.db = getFirestore(app);
+                } catch (e) { console.error("Firebase connection failed:", e); alert("Order service is currently unavailable."); }
             },
+            
             bindEvents() {
-                UIElements.addToCartButtons.forEach(btn => btn.addEventListener('click', this.handleAddToCart.bind(this)));
-                UIElements.viewCartBtn.addEventListener('click', this.openCartModal.bind(this));
-                UIElements.closeModalBtn.addEventListener('click', this.resetModal.bind(this));
-                UIElements.cartModal.addEventListener('click', (e) => { if (e.target === UIElements.cartModal) this.resetModal(); });
-                UIElements.getLocationBtn.addEventListener('click', this.handleGetLocation.bind(this));
-                UIElements.confirmManualAddressBtn.addEventListener('click', this.confirmManualAddress.bind(this));
-                [UIElements.customerName, UIElements.customerMobile].forEach(el => el.addEventListener('input', this.validateProceedButton.bind(this)));
-                UIElements.proceedToPayBtn.addEventListener('click', this.showPaymentView.bind(this));
-                UIElements.backToDetailsBtn.addEventListener('click', this.showDetailsView.bind(this));
-                UIElements.confirmOrderBtn.addEventListener('click', this.confirmOrder.bind(this));
+                this.UI.addToCartButtons.forEach(btn => btn.addEventListener('click', this.handleAddToCart.bind(this)));
+                this.UI.viewCartBtn.addEventListener('click', this.openCartModal.bind(this));
+                this.UI.closeModalBtn.addEventListener('click', this.resetModal.bind(this));
+                this.UI.cartModal.addEventListener('click', (e) => { if (e.target === this.UI.cartModal) this.resetModal(); });
+                this.UI.getLocationBtn.addEventListener('click', this.handleGetLocation.bind(this));
+                this.UI.confirmManualAddressBtn.addEventListener('click', this.confirmManualAddress.bind(this));
+                [this.UI.customerName, this.UI.customerMobile].forEach(el => el.addEventListener('input', this.validateOrderButton.bind(this)));
+                this.UI.placeOrderBtn.addEventListener('click', this.placeOrder.bind(this));
             },
+            
             initMap() {
                 const map = L.map('map').setView([18.5975, 73.9112], 17);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
                 L.marker([18.5975, 73.9112], {icon: L.icon({ iconUrl: 'https://img.icons8.com/ios-filled/50/D4AF37/crown.png', iconSize: [40, 40], iconAnchor: [20, 40], popupAnchor: [0, -40] })}).addTo(map).bindPopup('<b style="color: #1a1a1a;">Royal Bucket Biryani</b>').openPopup();
             },
+
             initializeFlashSale() {
                 let endTime = localStorage.getItem('offerEndTime') || (Date.now() + 24 * 36e5);
                 localStorage.setItem('offerEndTime', endTime);
@@ -272,25 +180,27 @@
                     const dist = endTime - Date.now();
                     if (dist < 0) {
                         clearInterval(timer);
-                        AppState.isOfferActive = false;
-                        UIElements.specialOfferSection.style.display = 'none';
+                        this.isOfferActive = false;
+                        this.UI.specialOfferSection.style.display = 'none';
                         this.resetPricesToOriginal(); return;
                     }
-                    AppState.isOfferActive = true;
-                    UIElements.specialOfferSection.style.display = 'block';
+                    this.isOfferActive = true;
+                    this.UI.specialOfferSection.style.display = 'block';
                     const h = String(Math.floor((dist / 36e5) % 24)).padStart(2, '0'), m = String(Math.floor((dist / 6e4) % 60)).padStart(2, '0'), s = String(Math.floor((dist / 1e3) % 60)).padStart(2, '0');
-                    UIElements.countdownTimer.innerHTML = `<div class="text-center"><div class="text-4xl font-royal">${h}</div><div class="text-sm">Hours</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${m}</div><div class="text-sm">Minutes</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${s}</div><div class="text-sm">Seconds</div></div>`;
+                    this.UI.countdownTimer.innerHTML = `<div class="text-center"><div class="text-4xl font-royal">${h}</div><div class="text-sm">Hours</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${m}</div><div class="text-sm">Minutes</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${s}</div><div class="text-sm">Seconds</div></div>`;
                 }, 1000);
                 if (Date.now() < endTime) this.activateOfferPrices();
             },
+
             activateOfferPrices() {
                 document.querySelectorAll('.menu-card').forEach(card => {
-                    const originalPriceEl = card.querySelector('.original-price'), offerPriceEl = card.querySelector('.offer-price'), btn = card.querySelector('.add-to-cart-btn');
-                    originalPriceEl.textContent = `₹${btn.dataset.priceOriginal}`;
-                    originalPriceEl.classList.remove('hidden');
-                    offerPriceEl.textContent = '₹1';
+                    const btn = card.querySelector('.add-to-cart-btn');
+                    card.querySelector('.original-price').textContent = `₹${btn.dataset.priceOriginal}`;
+                    card.querySelector('.original-price').classList.remove('hidden');
+                    card.querySelector('.offer-price').textContent = '₹1';
                 });
             },
+
             resetPricesToOriginal() {
                 document.querySelectorAll('.menu-card').forEach(card => {
                     const btn = card.querySelector('.add-to-cart-btn');
@@ -298,42 +208,47 @@
                     card.querySelector('.original-price').classList.add('hidden');
                 });
             },
-            calculateTotal() { return AppState.cart.reduce((s, i) => s + (i.price * i.quantity), 0); },
+
+            calculateTotal() { return this.cart.reduce((s, i) => s + (i.price * i.quantity), 0); },
+
             updateCartUI() {
                 const total = this.calculateTotal();
-                UIElements.cartCount.textContent = AppState.cart.reduce((s, i) => s + i.quantity, 0);
-                UIElements.totalAmount.textContent = `₹${total}`;
-                if (AppState.cart.length === 0) {
-                    UIElements.cartItemsContainer.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
+                this.UI.cartCount.textContent = this.cart.reduce((s, i) => s + i.quantity, 0);
+                this.UI.totalAmount.textContent = `₹${total}`;
+                if (this.cart.length === 0) {
+                    this.UI.cartItemsContainer.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
                 } else {
-                    UIElements.cartItemsContainer.innerHTML = '';
-                    AppState.cart.forEach((item, index) => {
+                    this.UI.cartItemsContainer.innerHTML = '';
+                    this.cart.forEach((item, index) => {
                         const el = document.createElement('div');
                         el.className = 'cart-item py-2 flex justify-between items-center';
                         el.innerHTML = `<div><p class="font-semibold text-white">${item.name}</p><p class="text-sm text-gray-400">₹${item.price} x ${item.quantity}</p></div><div class="flex items-center gap-2"><button class="remove-item-btn text-red-500 font-bold px-2 rounded" data-index="${index}">-</button><span class="font-bold text-lg text-gold">₹${item.price * item.quantity}</span></div>`;
-                        UIElements.cartItemsContainer.appendChild(el);
+                        this.UI.cartItemsContainer.appendChild(el);
                     });
-                    UIElements.cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(b => b.addEventListener('click', (e) => this.removeItemFromCart(e.target.dataset.index)));
+                    this.UI.cartItemsContainer.querySelectorAll('.remove-item-btn').forEach(b => b.addEventListener('click', (e) => this.removeItemFromCart(e.target.dataset.index)));
                 }
-                this.validateProceedButton();
+                this.validateOrderButton();
             },
+
             handleAddToCart(e) {
                 const { name, priceOriginal } = e.target.dataset;
-                const price = AppState.isOfferActive ? 1 : parseInt(priceOriginal);
-                const item = AppState.cart.find(i => i.name === name);
+                const price = this.isOfferActive ? 1 : parseInt(priceOriginal);
+                const item = this.cart.find(i => i.name === name);
                 if (item) item.quantity++;
-                else AppState.cart.push({ name, price, quantity: 1 });
+                else this.cart.push({ name, price, quantity: 1 });
                 this.updateCartUI();
                 e.target.textContent = 'Added!';
                 setTimeout(() => { e.target.textContent = 'Add to Cart'; }, 1000);
             },
+            
             removeItemFromCart(index) {
-                if (AppState.cart[index].quantity > 1) AppState.cart[index].quantity--;
-                else AppState.cart.splice(index, 1);
+                if (this.cart[index].quantity > 1) this.cart[index].quantity--;
+                else this.cart.splice(index, 1);
                 this.updateCartUI();
             },
+            
             handleGetLocation() {
-                UIElements.locationStatus.textContent = "Fetching location...";
+                this.UI.locationStatus.textContent = "Fetching location...";
                 navigator.geolocation.getCurrentPosition(
                     async (pos) => {
                         const { latitude, longitude } = pos.coords;
@@ -341,92 +256,89 @@
                             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
                             const data = await res.json();
                             if (data && data.display_name) this.setAddress({ address: data.display_name, mapLink: `https://www.google.com/maps?q=${latitude},${longitude}` });
-                            else throw new Error();
+                            else throw new Error("Could not fetch address.");
                         } catch (e) { this.handleLocationError("Could not fetch address. Please enter manually."); }
                     },
                     () => this.handleLocationError("Location access denied. Please allow location or enter manually below.")
                 );
             },
+
             handleLocationError(msg) {
-                UIElements.locationStatus.textContent = msg;
-                UIElements.manualAddressSection.classList.remove('hidden');
+                this.UI.locationStatus.textContent = msg;
+                this.UI.manualAddressSection.classList.remove('hidden');
             },
+
             confirmManualAddress() {
-                const addr = UIElements.manualAddressInput.value.trim();
+                const addr = this.UI.manualAddressInput.value.trim();
                 if (addr) this.setAddress({ address: addr, mapLink: 'Not available' });
-                else UIElements.locationStatus.textContent = "Please enter address.";
+                else this.UI.locationStatus.textContent = "Please enter address.";
             },
+
             setAddress(addrInfo) {
-                AppState.deliveryAddressInfo = addrInfo;
-                UIElements.locationStatus.textContent = "Address Confirmed!";
-                UIElements.locationStatus.classList.add('text-green-400');
-                UIElements.getLocationBtn.textContent = 'ADDRESS CONFIRMED';
-                UIElements.getLocationBtn.disabled = true;
-                UIElements.manualAddressSection.classList.add('hidden');
-                this.validateProceedButton();
+                this.deliveryAddressInfo = addrInfo;
+                this.UI.locationStatus.textContent = "Address Confirmed!";
+                this.UI.locationStatus.classList.add('text-green-400');
+                this.UI.getLocationBtn.textContent = 'ADDRESS CONFIRMED';
+                this.UI.getLocationBtn.disabled = true;
+                this.UI.manualAddressSection.classList.add('hidden');
+                this.validateOrderButton();
             },
-            validateProceedButton() {
-                const { customerName, customerMobile, proceedToPayBtn } = UIElements;
-                const name = customerName.value.trim(), mobile = customerMobile.value.trim();
-                if (AppState.cart.length > 0 && AppState.deliveryAddressInfo && name && mobile.length >= 10) {
-                    proceedToPayBtn.disabled = false;
-                    proceedToPayBtn.classList.remove('bg-gray-500', 'cursor-not-allowed');
-                    proceedToPayBtn.classList.add('bg-gold-gradient', 'text-black', 'btn-royal');
+
+            validateOrderButton() {
+                const name = this.UI.customerName.value.trim(), mobile = this.UI.customerMobile.value.trim();
+                if (this.cart.length > 0 && this.deliveryAddressInfo && name && mobile.length >= 10) {
+                    this.UI.placeOrderBtn.disabled = false;
+                    this.UI.placeOrderBtn.classList.remove('bg-gray-500', 'cursor-not-allowed');
+                    this.UI.placeOrderBtn.classList.add('bg-green-500', 'btn-royal');
                 } else {
-                    proceedToPayBtn.disabled = true;
-                    proceedToPayBtn.classList.add('bg-gray-500', 'cursor-not-allowed');
-                    proceedToPayBtn.classList.remove('bg-gold-gradient', 'text-black', 'btn-royal');
+                    this.UI.placeOrderBtn.disabled = true;
+                    this.UI.placeOrderBtn.classList.add('bg-gray-500', 'cursor-not-allowed');
+                    this.UI.placeOrderBtn.classList.remove('bg-green-500', 'btn-royal');
                 }
             },
-            showPaymentView() {
-                UIElements.detailsView.classList.add('hidden');
-                UIElements.paymentView.classList.remove('hidden');
-                const total = this.calculateTotal();
-                UIElements.payBtnLink.href = `upi://pay?pa=sanketchaudhari224-2@oksbi&pn=Royal%20Bucket%20Biryani&am=${total}&cu=INR&tn=Order`;
-            },
-            showDetailsView() {
-                UIElements.paymentView.classList.add('hidden');
-                UIElements.detailsView.classList.remove('hidden');
-            },
-            async confirmOrder() {
-                if (UIElements.confirmOrderBtn.disabled || !AppState.db) return;
-                UIElements.confirmOrderBtn.textContent = "Placing Order...";
-                UIElements.confirmOrderBtn.disabled = true;
+
+            async placeOrder() {
+                if (this.UI.placeOrderBtn.disabled || !this.db) return;
+                this.UI.placeOrderBtn.textContent = "Placing Order...";
+                this.UI.placeOrderBtn.disabled = true;
+                
                 const total = this.calculateTotal();
                 const orderData = {
-                    customerName: UIElements.customerName.value.trim(),
-                    customerMobile: UIElements.customerMobile.value.trim(),
-                    addressInfo: AppState.deliveryAddressInfo,
-                    cartItems: AppState.cart,
-                    totalAmount: total, status: "New", timestamp: serverTimestamp(), isFlashSaleOrder: AppState.isOfferActive
+                    customerName: this.UI.customerName.value.trim(), customerMobile: this.UI.customerMobile.value.trim(),
+                    addressInfo: this.deliveryAddressInfo, cartItems: this.cart, totalAmount: total, status: "New", 
+                    timestamp: serverTimestamp(), isFlashSaleOrder: this.isOfferActive
                 };
+                
                 try {
-                    await addDoc(collection(AppState.db, "orders"), orderData);
-                    alert("Order Placed Successfully!");
+                    await addDoc(collection(this.db, "orders"), orderData);
+                    const upiUrl = `upi://pay?pa=sanketchaudhari224-2@oksbi&pn=Royal%20Bucket%20Biryani&am=${total}&cu=INR&tn=Order%20ID%20${Date.now()}`;
+                    window.location.href = upiUrl;
+                    alert("Order Placed! You will now be redirected to payment.");
                     this.resetModal();
                 } catch (e) {
-                    alert("Could not place order. Please try again.");
-                    UIElements.confirmOrderBtn.textContent = "CONFIRM & PLACE ORDER (After Paying)";
-                    UIElements.confirmOrderBtn.disabled = false;
+                    alert(`Could not place order. PLEASE CHECK FIREBASE RULES. Error: ${e.message}`);
+                    this.UI.placeOrderBtn.textContent = "PLACE ORDER & PAY";
+                    this.validateOrderButton();
                 }
             },
+
             openCartModal() {
                 this.updateCartUI();
-                UIElements.cartModal.classList.add('active');
+                this.UI.cartModal.classList.add('active');
             },
+
             resetModal() {
-                UIElements.cartModal.classList.remove('active');
+                this.UI.cartModal.classList.remove('active');
                 setTimeout(() => {
-                    AppState.cart.length = 0;
-                    AppState.deliveryAddressInfo = null;
+                    this.cart.length = 0;
+                    this.deliveryAddressInfo = null;
                     this.updateCartUI();
-                    ['customerName', 'customerMobile', 'manualAddressInput'].forEach(k => UIElements[k].value = '');
-                    UIElements.locationStatus.textContent = "";
-                    UIElements.locationStatus.classList.remove('text-green-400');
-                    UIElements.getLocationBtn.textContent = 'ADD DELIVERY ADDRESS';
-                    UIElements.getLocationBtn.disabled = false;
-                    UIElements.manualAddressSection.classList.add('hidden');
-                    this.showDetailsView();
+                    ['customerName', 'customerMobile', 'manualAddressInput'].forEach(k => this.UI[k].value = '');
+                    this.UI.locationStatus.textContent = "";
+                    this.UI.locationStatus.classList.remove('text-green-400');
+                    this.UI.getLocationBtn.textContent = '* ADD DELIVERY ADDRESS';
+                    this.UI.getLocationBtn.disabled = false;
+                    this.UI.manualAddressSection.classList.add('hidden');
                 }, 500);
             }
         };
