@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Royal Bucket Biryani</title>
-    
-    <!-- PWA Manifest and Theme Color -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#D4AF37">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
@@ -34,189 +31,140 @@
     <!-- Login Screen -->
     <div id="login-screen" class="min-h-screen flex items-center justify-center bg-black bg-opacity-50">
         <div class="w-full max-w-md p-8 space-y-6 bg-card-bg rounded-2xl shadow-lg border-t-4 border-gold">
-            <div class="text-center">
-                <h1 class="text-3xl font-royal text-gold">Admin Login</h1>
-                <p class="text-gray-400">Royal Bucket Biryani</p>
-            </div>
+            <div class="text-center"><h1 class="text-3xl font-royal text-gold">Admin Login</h1><p class="text-gray-400">Royal Bucket Biryani</p></div>
             <div class="space-y-4">
-                <div>
-                    <label for="email" class="text-sm font-medium text-gray-300">Email Address</label>
-                    <input type="email" id="email" class="w-full mt-1 p-3 bg-[#333] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gold" placeholder="admin@example.com">
-                </div>
-                <div>
-                    <label for="password" class="text-sm font-medium text-gray-300">Password</label>
-                    <input type="password" id="password" class="w-full mt-1 p-3 bg-[#333] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gold" placeholder="••••••••">
-                </div>
+                <div><label for="email" class="text-sm font-medium text-gray-300">Email Address</label><input type="email" id="email" class="w-full mt-1 p-3 bg-[#333] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gold" placeholder="admin@example.com"></div>
+                <div><label for="password" class="text-sm font-medium text-gray-300">Password</label><input type="password" id="password" class="w-full mt-1 p-3 bg-[#333] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gold" placeholder="••••••••"></div>
             </div>
             <p id="login-error" class="text-sm text-red-500 h-4 text-center"></p>
-            <button id="login-btn" class="w-full bg-gold-gradient text-black font-bold py-3 px-10 rounded-full text-lg btn-royal">
-                Login Securely
-            </button>
+            <button id="login-btn" class="w-full bg-gold-gradient text-black font-bold py-3 px-10 rounded-full text-lg btn-royal">Login Securely</button>
         </div>
     </div>
 
     <!-- Dashboard Screen (Initially hidden) -->
     <div id="dashboard-screen" class="hidden p-4 md:p-8">
-        <header class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-royal text-gold">Live Dashboard</h1>
-            <button id="logout-btn" class="text-sm font-semibold bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-full transition-colors">Logout</button>
-        </header>
-
-        <!-- Stats Section -->
+        <header class="flex justify-between items-center mb-8"><h1 class="text-3xl md:text-4xl font-royal text-gold">Live Dashboard</h1><button id="logout-btn" class="text-sm font-semibold bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-full transition-colors">Logout</button></header>
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="stat-card p-6 rounded-lg shadow-lg text-center">
-                <p class="text-sm text-gray-400 uppercase">Today's Orders</p>
-                <p id="today-orders-stat" class="text-5xl font-royal text-white mt-2">0</p>
-            </div>
-            <div class="stat-card p-6 rounded-lg shadow-lg text-center">
-                <p class="text-sm text-gray-400 uppercase">Total Revenue</p>
-                <p id="total-revenue-stat" class="text-5xl font-royal text-white mt-2">₹0</p>
-            </div>
-            <div class="stat-card p-6 rounded-lg shadow-lg text-center">
-                <p class="text-sm text-gray-400 uppercase">Total Orders</p>
-                <p id="total-orders-stat" class="text-5xl font-royal text-white mt-2">0</p>
-            </div>
+            <div class="stat-card p-6 rounded-lg shadow-lg text-center"><p class="text-sm text-gray-400 uppercase">Today's Orders</p><p id="today-orders-stat" class="text-5xl font-royal text-white mt-2">0</p></div>
+            <div class="stat-card p-6 rounded-lg shadow-lg text-center"><p class="text-sm text-gray-400 uppercase">Total Revenue</p><p id="total-revenue-stat" class="text-5xl font-royal text-white mt-2">₹0</p></div>
+            <div class="stat-card p-6 rounded-lg shadow-lg text-center"><p class="text-sm text-gray-400 uppercase">Total Orders</p><p id="total-orders-stat" class="text-5xl font-royal text-white mt-2">0</p></div>
         </section>
-
-        <main id="order-list" class="container mx-auto max-w-4xl space-y-4">
-            <p class="text-center text-gray-500">Listening for new orders...</p>
-        </main>
+        <main id="order-list" class="container mx-auto max-w-4xl space-y-4"><p class="text-center text-gray-500">Listening for new orders...</p></main>
     </div>
     
-    <script>
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js') // Path for GitHub Pages
-                    .then(reg => console.log('ServiceWorker registration successful: ', reg.scope))
-                    .catch(err => console.log('ServiceWorker registration failed: ', err));
-            });
-        }
-    </script>
-
+    <script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').then(reg => console.log('SW registered')).catch(err => console.log('SW registration failed: ', err)); }); }</script>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.2/+esm'
         
-        const firebaseConfig = {
-          apiKey: "AIzaSyC-aaMW97LNwlaMLm7zZkbOhcRHDq0aUcM",
-          authDomain: "royal-biryani-orders.firebaseapp.com",
-          projectId: "royal-biryani-orders",
-          storageBucket: "royal-biryani-orders.appspot.com",
-          messagingSenderId: "420687702254",
-          appId: "1:420687702254:web:0de3fd0fb7325810072bff"
+        const supabaseUrl = 'https://fgjcvanldbuwzmkchvxc.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnamN2YW5sZGJ1d3pta2NodnhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNzY4MzAsImV4cCI6MjA3MjY1MjgzMH0.48dOfWo75En4wwg76TyAOEe5BOq7xRE_9I2zeEz_7aU';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        
+        const UI = {
+            loginScreen: document.getElementById('login-screen'), dashboardScreen: document.getElementById('dashboard-screen'),
+            loginBtn: document.getElementById('login-btn'), logoutBtn: document.getElementById('logout-btn'),
+            emailInput: document.getElementById('email'), passwordInput: document.getElementById('password'),
+            loginError: document.getElementById('login-error'), orderListEl: document.getElementById('order-list')
         };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
         
-        const loginScreen = document.getElementById('login-screen');
-        const dashboardScreen = document.getElementById('dashboard-screen');
-        const loginBtn = document.getElementById('login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const loginError = document.getElementById('login-error');
-        const orderListEl = document.getElementById('order-list');
         const synth = new Tone.Synth().toDestination();
-        let isFirstLoad = true;
-        let unsubscribe;
+        let allOrders = [];
 
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                loginScreen.style.display = 'none';
-                dashboardScreen.style.display = 'block';
+        async function handleLogin() {
+            const { email, password } = { email: UI.emailInput.value, password: UI.passwordInput.value };
+            UI.loginError.textContent = '';
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) UI.loginError.textContent = 'Invalid email or password.';
+        }
+
+        async function handleLogout() {
+            await supabase.auth.signOut();
+        }
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (session && event === 'SIGNED_IN') {
+                UI.loginScreen.style.display = 'none'; UI.dashboardScreen.style.display = 'block';
                 listenForOrders();
-            } else {
-                dashboardScreen.style.display = 'none';
-                loginScreen.style.display = 'flex';
-                if (unsubscribe) unsubscribe();
+            }
+            if (event === 'SIGNED_OUT') {
+                UI.dashboardScreen.style.display = 'none'; UI.loginScreen.style.display = 'flex';
+                const channel = supabase.channel('public:orders');
+                if (channel) channel.unsubscribe();
             }
         });
 
-        loginBtn.addEventListener('click', () => {
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            loginError.textContent = '';
-            signInWithEmailAndPassword(auth, email, password)
-                .catch(error => { loginError.textContent = 'Invalid email or password.'; });
-        });
-
-        logoutBtn.addEventListener('click', () => { signOut(auth); });
-
         function listenForOrders() {
-            const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
-            unsubscribe = onSnapshot(q, (snapshot) => {
-                updateStats(snapshot.docs);
-                if (isFirstLoad && snapshot.docs.length > 0) {
-                     orderListEl.innerHTML = '';
-                     snapshot.docs.forEach(doc => orderListEl.appendChild(createOrderCard(doc)));
-                } else if (isFirstLoad) {
-                     orderListEl.innerHTML = '<p class="text-center text-gray-500">No orders yet.</p>';
-                }
-                snapshot.docChanges().forEach((change) => {
-                    if (!isFirstLoad && change.type === "added") {
-                        if(document.visibilityState === 'visible') try { synth.triggerAttackRelease("C5", "8n"); } catch(e) {}
-                        if(orderListEl.querySelector('p')) orderListEl.innerHTML = '';
-                        orderListEl.prepend(createOrderCard(change.doc));
+            supabase.channel('public:orders')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => {
+                    fetchAndRenderOrders();
+                    if(payload.eventType === 'INSERT' && document.visibilityState === 'visible') {
+                        try { synth.triggerAttackRelease("C5", "8n"); } catch (e) {}
                     }
-                    if (change.type === "modified") {
-                        const oldCard = document.getElementById(change.doc.id);
-                        if(oldCard) oldCard.replaceWith(createOrderCard(change.doc));
-                    }
-                });
-                isFirstLoad = false;
-            });
+                })
+                .subscribe();
+            fetchAndRenderOrders(true);
+        }
+        
+        async function fetchAndRenderOrders(isFirstLoad = false) {
+            const { data: orders, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+            if (error) { console.error("Error fetching orders:", error); return; }
+            allOrders = orders;
+            updateStats(allOrders);
+            UI.orderListEl.innerHTML = allOrders.length === 0 ? '<p class="text-center text-gray-500">No orders yet.</p>' : '';
+            allOrders.forEach(order => UI.orderListEl.appendChild(createOrderCard(order)));
         }
 
-        function updateStats(docs) {
-            const today = new Date().setHours(0,0,0,0);
-            let todayOrders = 0;
-            let totalRevenue = 0;
-            docs.forEach(doc => {
-                const order = doc.data();
-                totalRevenue += order.totalAmount;
-                if (order.timestamp && order.timestamp.toDate() >= today) {
-                    todayOrders++;
-                }
+        function updateStats(orders) {
+            const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
+            let todayOrders = 0, totalRevenue = 0;
+            orders.forEach(order => {
+                totalRevenue += order.total_amount;
+                if (new Date(order.created_at) >= todayStart) todayOrders++;
             });
             document.getElementById('today-orders-stat').textContent = todayOrders;
             document.getElementById('total-revenue-stat').textContent = `₹${totalRevenue}`;
-            document.getElementById('total-orders-stat').textContent = docs.length;
+            document.getElementById('total-orders-stat').textContent = orders.length;
         }
         
-        function createOrderCard(doc) {
-            const order = doc.data();
+        function createOrderCard(order) {
             const card = document.createElement('div');
-            card.id = doc.id;
+            card.id = `order-${order.id}`;
             card.className = `order-card status-${order.status.replace(/\s+/g, '-')} rounded-lg p-4 shadow-lg`;
-            const itemsHtml = order.cartItems.map(item => `<li class="flex justify-between"><span>${item.name} (x${item.quantity})</span><span>₹${item.price * item.quantity}</span></li>`).join('');
-            const time = order.timestamp ? new Date(order.timestamp.seconds * 1000).toLocaleTimeString('en-IN', { hour: '2-digit', minute:'2-digit'}) : 'N/A';
-            const flashSaleTag = order.isFlashSaleOrder ? '<span class="text-xs font-bold bg-yellow-500 text-black px-2 py-1 rounded-full ml-2">FLASH SALE</span>' : '';
+            const itemsHtml = order.cart_items.map(item => `<li class="flex justify-between"><span>${item.name} (x${item.quantity})</span><span>₹${item.price * item.quantity}</span></li>`).join('');
+            const time = new Date(order.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+            const flashTag = order.is_flash_sale_order ? '<span class="text-xs font-bold bg-yellow-500 text-black px-2 py-1 rounded-full ml-2">FLASH SALE</span>' : '';
+            const partnerInfo = (order.status === 'Out for Delivery' && order.delivery_partner_name) ? `<div class="mt-2 text-sm"><p>Partner: <span class="font-bold">${order.delivery_partner_name}</span> | Phone: <a href="tel:${order.delivery_partner_phone}" class="text-blue-400 underline">${order.delivery_partner_phone}</a></p></div>` : '';
 
             card.innerHTML = `
-                <div class="flex justify-between items-center"><div><p class="font-bold text-lg flex items-center">${order.customerName} ${flashSaleTag}</p><p class="text-sm text-gray-400">${order.customerMobile}</p></div><div class="text-right"><p class="text-2xl font-royal text-gold">₹${order.totalAmount}</p><p class="text-xs text-gray-500">${time}</p></div></div>
+                <div class="flex justify-between items-center"><div><p class="font-bold text-lg flex items-center">${order.customer_name} (${order.order_id}) ${flashTag}</p><p class="text-sm text-gray-400">${order.customer_mobile}</p></div><div class="text-right"><p class="text-2xl font-royal text-gold">₹${order.total_amount}</p><p class="text-xs text-gray-500">${time}</p></div></div>
                 <div class="mt-4 border-t border-gray-700 pt-4"><p class="font-semibold mb-2">Items:</p><ul class="space-y-1 text-sm text-gray-300">${itemsHtml}</ul></div>
-                <div class="mt-4 border-t border-gray-700 pt-4"><p class="font-semibold mb-2">Delivery Address:</p><p class="text-sm text-gray-300">${order.addressInfo.address}</p>${order.addressInfo.mapLink !== 'Not available' ? `<a href="${order.addressInfo.mapLink}" target="_blank" class="text-xs text-blue-400 hover:underline">View on Google Maps</a>` : ''}</div>
+                <div class="mt-4 border-t border-gray-700 pt-4"><p class="font-semibold mb-2">Delivery Address:</p><p class="text-sm text-gray-300">${order.address_info.address}</p>${order.address_info.mapLink !== 'Not available' ? `<a href="${order.address_info.mapLink}" target="_blank" class="text-xs text-blue-400 hover:underline">View on Google Maps</a>` : ''}${partnerInfo}</div>
                 <div class="mt-4 border-t border-gray-700 pt-4"><p class="font-semibold mb-2">Status: <span class="font-bold">${order.status}</span></p><div class="flex flex-wrap gap-2 mt-2">
-                    <button data-id="${doc.id}" data-status="Preparing" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Preparing' ? 'bg-blue-600' : 'bg-gray-600 hover:bg-blue-500'}">Preparing</button>
-                    <button data-id="${doc.id}" data-status="Out for Delivery" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Out for Delivery' ? 'bg-orange-500' : 'bg-gray-600 hover:bg-orange-400'}">Out for Delivery</button>
-                    <button data-id="${doc.id}" data-status="Completed" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Completed' ? 'bg-green-600' : 'bg-gray-600 hover:bg-green-500'}">Completed</button>
-                </div></div>`;
+                    <button data-id="${order.id}" data-status="Preparing" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Preparing' ? 'bg-blue-600' : 'bg-gray-600 hover:bg-blue-500'}">Preparing</button>
+                    <button data-id="${order.id}" data-status="Completed" class="status-btn text-xs font-bold py-1 px-3 rounded-full ${order.status === 'Completed' ? 'bg-green-600' : 'bg-gray-600 hover:bg-green-500'}">Completed</button>
+                </div></div>
+                <div id="delivery-section-${order.id}" class="mt-4 border-t border-gray-700 pt-4 ${order.status === 'Preparing' ? '' : 'hidden'}"><p class="font-semibold mb-2">Assign Delivery Partner:</p><div class="flex flex-col md:flex-row gap-2"><input type="text" id="partner-name-${order.id}" placeholder="Partner Name" class="flex-grow p-2 bg-[#333] rounded-md"><input type="tel" id="partner-phone-${order.id}" placeholder="Partner Phone" class="flex-grow p-2 bg-[#333] rounded-md"><button data-id="${order.id}" class="assign-btn bg-orange-500 hover:bg-orange-600 text-white font-bold p-2 rounded-md">Assign & Dispatch</button></div></div>`;
             return card;
         }
 
-        orderListEl.addEventListener('click', async (e) => {
+        UI.orderListEl.addEventListener('click', async (e) => {
+            const { id, status } = e.target.dataset;
             if (e.target.classList.contains('status-btn')) {
-                const orderId = e.target.dataset.id;
-                const newStatus = e.target.dataset.status;
-                try {
-                    await updateDoc(doc(db, "orders", orderId), { status: newStatus });
-                } catch (err) { console.error("Error updating status: ", err); }
+                const { error } = await supabase.from('orders').update({ status: status }).eq('id', id);
+                if (error) console.error("Error updating status: ", error);
+            }
+            if (e.target.classList.contains('assign-btn')) {
+                const partnerName = document.getElementById(`partner-name-${id}`).value.trim();
+                const partnerPhone = document.getElementById(`partner-phone-${id}`).value.trim();
+                if(partnerName && partnerPhone) {
+                    const { error } = await supabase.from('orders').update({ status: "Out for Delivery", delivery_partner_name: partnerName, delivery_partner_phone: partnerPhone }).eq('id', id);
+                    if (error) console.error("Error assigning partner: ", error);
+                } else { alert("Please enter partner name and phone number."); }
             }
         });
+
+        UI.loginBtn.addEventListener('click', handleLogin);
+        UI.logoutBtn.addEventListener('click', handleLogout);
     </script>
 </body>
 </html>
