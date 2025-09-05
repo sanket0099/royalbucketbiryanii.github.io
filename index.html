@@ -33,7 +33,7 @@
     <header class="bg-black bg-opacity-80 backdrop-blur-sm shadow-lg sticky top-0 z-50">
          <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <h1 class="text-2xl md:text-3xl font-royal text-gold">Royal Bucket Biryani</h1>
-            <nav class="hidden md:flex items-center space-x-8"><a href="#menu" class="text-gray-300 hover:text-gold transition font-semibold">The Menu</a><a href="#location" class="text-gray-300 hover:text-gold transition font-semibold">Visit Us</a></nav>
+            <nav class="hidden md:flex items-center space-x-8"><a href="#menu" class="text-gray-300 hover:text-gold transition font-semibold">The Menu</a><a href="track.html" class="text-gray-300 hover:text-gold transition font-semibold">Track Order</a><a href="#location" class="text-gray-300 hover:text-gold transition font-semibold">Visit Us</a></nav>
             <button id="view-cart-btn" class="bg-gold-gradient text-black font-bold py-2 px-6 rounded-full btn-royal flex items-center">View Cart <span id="cart-count" class="ml-2 bg-black text-gold rounded-full px-2 text-sm">0</span></button>
         </div>
     </header>
@@ -81,19 +81,30 @@
     <!-- Cart Modal -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-container">
-            <div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-royal text-gold">Your Order</h3><button id="close-modal-btn" class="text-2xl text-gray-400 hover:text-gold">&times;</button></div>
-            <div id="cart-items-container" class="mb-4"></div>
-            <div class="space-y-2 mb-4"><div class="flex justify-between items-center bg-black p-4 rounded-lg border-t-2 border-gold"><p class="text-xl font-semibold">Total Amount:</p><p id="total-amount" class="text-2xl font-bold text-gold">₹0</p></div></div>
-            <div class="space-y-3 border-t-2 border-dashed border-gold pt-4">
-                <p class="text-center text-lg text-gold font-royal">Enter Your Details to Proceed</p>
-                <input type="text" id="customer-name" placeholder="* Enter Your Full Name" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
-                <input type="tel" id="customer-mobile" placeholder="* Enter Your Mobile Number" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
-                <div class="text-center p-2 rounded-lg bg-black">
-                    <button id="get-location-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-lg btn-royal">* ADD DELIVERY ADDRESS</button>
-                    <div id="location-status" class="text-sm text-yellow-400 mt-2 h-4"></div>
-                    <div id="manual-address-section" class="hidden mt-2"><textarea id="manual-address-input" rows="2" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-2" placeholder="Enter your full address here..."></textarea><button id="confirm-manual-address-btn" class="w-full mt-2 bg-gold-gradient text-black font-bold py-2 rounded-full btn-royal">Confirm Manual Address</button></div>
+            <div id="order-view">
+                <div class="flex justify-between items-center mb-4"><h3 class="text-3xl font-royal text-gold">Your Order</h3><button id="close-modal-btn" class="text-2xl text-gray-400 hover:text-gold">&times;</button></div>
+                <div id="cart-items-container" class="mb-4"></div>
+                <div class="space-y-2 mb-4"><div class="flex justify-between items-center bg-black p-4 rounded-lg border-t-2 border-gold"><p class="text-xl font-semibold">Total Amount:</p><p id="total-amount" class="text-2xl font-bold text-gold">₹0</p></div></div>
+                <div class="space-y-3 border-t-2 border-dashed border-gold pt-4">
+                    <p class="text-center text-lg text-gold font-royal">Enter Your Details to Proceed</p>
+                    <input type="text" id="customer-name" placeholder="* Enter Your Full Name" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
+                    <input type="tel" id="customer-mobile" placeholder="* Enter Your Mobile Number" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-3">
+                    <div class="text-center p-2 rounded-lg bg-black">
+                        <button id="get-location-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-lg btn-royal">* ADD DELIVERY ADDRESS</button>
+                        <div id="location-status" class="text-sm text-yellow-400 mt-2 h-4"></div>
+                        <div id="manual-address-section" class="hidden mt-2"><textarea id="manual-address-input" rows="2" class="w-full bg-[#333] text-white border border-gray-600 rounded-md p-2" placeholder="Enter your full address here..."></textarea><button id="confirm-manual-address-btn" class="w-full mt-2 bg-gold-gradient text-black font-bold py-2 rounded-full btn-royal">Confirm Manual Address</button></div>
+                    </div>
+                    <button id="place-order-btn" class="w-full bg-gray-500 cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-lg transition-colors duration-300" disabled>PLACE ORDER & PAY</button>
                 </div>
-                <button id="place-order-btn" class="w-full bg-gray-500 cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-lg transition-colors duration-300" disabled>PLACE ORDER & PAY</button>
+            </div>
+            <!-- Confirmation View -->
+            <div id="confirmation-view" class="hidden text-center">
+                 <h3 class="text-3xl font-royal text-green-400">Order Placed Successfully!</h3>
+                 <p class="mt-4 text-gray-300">Your unique Order ID is:</p>
+                 <p id="order-id-display" class="text-2xl font-bold bg-black p-3 my-2 rounded-lg text-gold border border-dashed border-gold"></p>
+                 <p class="text-gray-400 text-sm">Please use this ID to track your order.</p>
+                 <a href="track.html" id="track-order-link" class="mt-6 bg-gold-gradient text-black font-bold py-3 px-8 rounded-full text-lg btn-royal inline-block">Track Your Order Now</a>
+                 <button id="close-confirmation-btn" class="mt-4 text-gray-500 text-sm underline">Close</button>
             </div>
         </div>
     </div>
@@ -103,95 +114,67 @@
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
         (function(){
         var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/68b6f2358b5f3419254f375f/1j45a495s';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
+        s1.async=true; s1.src='https://embed.tawk.to/68b6f2358b5f3419254f375f/1j45a495s';
+        s1.charset='UTF-8'; s1.setAttribute('crossorigin','*'); s0.parentNode.insertBefore(s1,s0);
         })();
     </script>
     
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.2/+esm'
         
         const App = {
-            db: null, cart: [], deliveryAddressInfo: null, isOfferActive: false,
-            
+            supabase: null, cart: [], deliveryAddressInfo: null, isOfferActive: false,
             init() {
-                this.cacheDOMElements();
-                this.bindEvents();
-                this.initFirebase();
-                this.initMap();
-                this.initializeFlashSale();
+                this.cacheDOMElements(); this.bindEvents(); this.initSupabase(); this.initMap(); this.initializeFlashSale();
             },
-            
             cacheDOMElements() {
                 this.UI = {
-                    cartCount: document.getElementById('cart-count'),
-                    addToCartButtons: document.querySelectorAll('.add-to-cart-btn'),
-                    viewCartBtn: document.getElementById('view-cart-btn'),
-                    cartModal: document.getElementById('cart-modal'),
-                    closeModalBtn: document.getElementById('close-modal-btn'),
-                    cartItemsContainer: document.getElementById('cart-items-container'),
-                    totalAmount: document.getElementById('total-amount'),
-                    specialOfferSection: document.getElementById('special-offer'),
-                    countdownTimer: document.getElementById('countdown-timer'),
-                    getLocationBtn: document.getElementById('get-location-btn'),
-                    locationStatus: document.getElementById('location-status'),
-                    manualAddressSection: document.getElementById('manual-address-section'),
-                    manualAddressInput: document.getElementById('manual-address-input'),
-                    confirmManualAddressBtn: document.getElementById('confirm-manual-address-btn'),
-                    customerName: document.getElementById('customer-name'),
-                    customerMobile: document.getElementById('customer-mobile'),
-                    placeOrderBtn: document.getElementById('place-order-btn'),
+                    cartCount: document.getElementById('cart-count'), addToCartButtons: document.querySelectorAll('.add-to-cart-btn'),
+                    viewCartBtn: document.getElementById('view-cart-btn'), cartModal: document.getElementById('cart-modal'),
+                    closeModalBtn: document.getElementById('close-modal-btn'), cartItemsContainer: document.getElementById('cart-items-container'),
+                    totalAmount: document.getElementById('total-amount'), specialOfferSection: document.getElementById('special-offer'),
+                    countdownTimer: document.getElementById('countdown-timer'), getLocationBtn: document.getElementById('get-location-btn'),
+                    locationStatus: document.getElementById('location-status'), manualAddressSection: document.getElementById('manual-address-section'),
+                    manualAddressInput: document.getElementById('manual-address-input'), confirmManualAddressBtn: document.getElementById('confirm-manual-address-btn'),
+                    customerName: document.getElementById('customer-name'), customerMobile: document.getElementById('customer-mobile'),
+                    placeOrderBtn: document.getElementById('place-order-btn'), orderView: document.getElementById('order-view'),
+                    confirmationView: document.getElementById('confirmation-view'), orderIdDisplay: document.getElementById('order-id-display'),
+                    closeConfirmationBtn: document.getElementById('close-confirmation-btn'), trackOrderLink: document.getElementById('track-order-link'),
                 };
             },
-            
-            initFirebase() {
-                try {
-                    const firebaseConfig = {"apiKey":"AIzaSyC-aaMW97LNwlaMLm7zZkbOhcRHDq0aUcM","authDomain":"royal-biryani-orders.firebaseapp.com","projectId":"royal-biryani-orders","storageBucket":"royal-biryani-orders.appspot.com","messagingSenderId":"420687702254","appId":"1:420687702254:web:0de3fd0fb7325810072bff"};
-                    const app = initializeApp(firebaseConfig);
-                    this.db = getFirestore(app);
-                } catch (e) { console.error("Firebase connection failed:", e); alert("Order service is currently unavailable."); }
+            initSupabase() {
+                const supabaseUrl = 'https://fgjcvanldbuwzmkchvxc.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnamN2YW5sZGJ1d3pta2NodnhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNzY4MzAsImV4cCI6MjA3MjY1MjgzMH0.48dOfWo75En4wwg76TyAOEe5BOq7xRE_9I2zeEz_7aU';
+                this.supabase = createClient(supabaseUrl, supabaseKey);
             },
-            
             bindEvents() {
                 this.UI.addToCartButtons.forEach(btn => btn.addEventListener('click', this.handleAddToCart.bind(this)));
                 this.UI.viewCartBtn.addEventListener('click', this.openCartModal.bind(this));
                 this.UI.closeModalBtn.addEventListener('click', this.resetModal.bind(this));
+                this.UI.closeConfirmationBtn.addEventListener('click', this.resetModal.bind(this));
                 this.UI.cartModal.addEventListener('click', (e) => { if (e.target === this.UI.cartModal) this.resetModal(); });
                 this.UI.getLocationBtn.addEventListener('click', this.handleGetLocation.bind(this));
                 this.UI.confirmManualAddressBtn.addEventListener('click', this.confirmManualAddress.bind(this));
                 [this.UI.customerName, this.UI.customerMobile].forEach(el => el.addEventListener('input', this.validateOrderButton.bind(this)));
                 this.UI.placeOrderBtn.addEventListener('click', this.placeOrder.bind(this));
             },
-            
             initMap() {
                 const map = L.map('map').setView([18.5975, 73.9112], 17);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
                 L.marker([18.5975, 73.9112], {icon: L.icon({ iconUrl: 'https://img.icons8.com/ios-filled/50/D4AF37/crown.png', iconSize: [40, 40], iconAnchor: [20, 40], popupAnchor: [0, -40] })}).addTo(map).bindPopup('<b style="color: #1a1a1a;">Royal Bucket Biryani</b>').openPopup();
             },
-
             initializeFlashSale() {
                 let endTime = localStorage.getItem('offerEndTime') || (Date.now() + 24 * 36e5);
                 localStorage.setItem('offerEndTime', endTime);
                 const timer = setInterval(() => {
                     const dist = endTime - Date.now();
-                    if (dist < 0) {
-                        clearInterval(timer);
-                        this.isOfferActive = false;
-                        this.UI.specialOfferSection.style.display = 'none';
-                        this.resetPricesToOriginal(); return;
-                    }
-                    this.isOfferActive = true;
-                    this.UI.specialOfferSection.style.display = 'block';
+                    if (dist < 0) { clearInterval(timer); this.isOfferActive = false; this.UI.specialOfferSection.style.display = 'none'; this.resetPricesToOriginal(); return; }
+                    this.isOfferActive = true; this.UI.specialOfferSection.style.display = 'block';
                     const h = String(Math.floor((dist / 36e5) % 24)).padStart(2, '0'), m = String(Math.floor((dist / 6e4) % 60)).padStart(2, '0'), s = String(Math.floor((dist / 1e3) % 60)).padStart(2, '0');
                     this.UI.countdownTimer.innerHTML = `<div class="text-center"><div class="text-4xl font-royal">${h}</div><div class="text-sm">Hours</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${m}</div><div class="text-sm">Minutes</div></div><div class="text-4xl font-royal">:</div><div class="text-center"><div class="text-4xl font-royal">${s}</div><div class="text-sm">Seconds</div></div>`;
                 }, 1000);
                 if (Date.now() < endTime) this.activateOfferPrices();
             },
-
             activateOfferPrices() {
                 document.querySelectorAll('.menu-card').forEach(card => {
                     const btn = card.querySelector('.add-to-cart-btn');
@@ -200,7 +183,6 @@
                     card.querySelector('.offer-price').textContent = '₹1';
                 });
             },
-
             resetPricesToOriginal() {
                 document.querySelectorAll('.menu-card').forEach(card => {
                     const btn = card.querySelector('.add-to-cart-btn');
@@ -208,16 +190,13 @@
                     card.querySelector('.original-price').classList.add('hidden');
                 });
             },
-
             calculateTotal() { return this.cart.reduce((s, i) => s + (i.price * i.quantity), 0); },
-
             updateCartUI() {
                 const total = this.calculateTotal();
                 this.UI.cartCount.textContent = this.cart.reduce((s, i) => s + i.quantity, 0);
                 this.UI.totalAmount.textContent = `₹${total}`;
-                if (this.cart.length === 0) {
-                    this.UI.cartItemsContainer.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
-                } else {
+                if (this.cart.length === 0) { this.UI.cartItemsContainer.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>'; }
+                else {
                     this.UI.cartItemsContainer.innerHTML = '';
                     this.cart.forEach((item, index) => {
                         const el = document.createElement('div');
@@ -229,24 +208,19 @@
                 }
                 this.validateOrderButton();
             },
-
             handleAddToCart(e) {
                 const { name, priceOriginal } = e.target.dataset;
                 const price = this.isOfferActive ? 1 : parseInt(priceOriginal);
                 const item = this.cart.find(i => i.name === name);
-                if (item) item.quantity++;
-                else this.cart.push({ name, price, quantity: 1 });
+                if (item) item.quantity++; else this.cart.push({ name, price, quantity: 1 });
                 this.updateCartUI();
                 e.target.textContent = 'Added!';
                 setTimeout(() => { e.target.textContent = 'Add to Cart'; }, 1000);
             },
-            
             removeItemFromCart(index) {
-                if (this.cart[index].quantity > 1) this.cart[index].quantity--;
-                else this.cart.splice(index, 1);
+                if (this.cart[index].quantity > 1) this.cart[index].quantity--; else this.cart.splice(index, 1);
                 this.updateCartUI();
             },
-            
             handleGetLocation() {
                 this.UI.locationStatus.textContent = "Fetching location...";
                 navigator.geolocation.getCurrentPosition(
@@ -262,18 +236,15 @@
                     () => this.handleLocationError("Location access denied. Please allow location or enter manually below.")
                 );
             },
-
             handleLocationError(msg) {
                 this.UI.locationStatus.textContent = msg;
                 this.UI.manualAddressSection.classList.remove('hidden');
             },
-
             confirmManualAddress() {
                 const addr = this.UI.manualAddressInput.value.trim();
                 if (addr) this.setAddress({ address: addr, mapLink: 'Not available' });
                 else this.UI.locationStatus.textContent = "Please enter address.";
             },
-
             setAddress(addrInfo) {
                 this.deliveryAddressInfo = addrInfo;
                 this.UI.locationStatus.textContent = "Address Confirmed!";
@@ -283,66 +254,54 @@
                 this.UI.manualAddressSection.classList.add('hidden');
                 this.validateOrderButton();
             },
-
             validateOrderButton() {
                 const name = this.UI.customerName.value.trim(), mobile = this.UI.customerMobile.value.trim();
                 if (this.cart.length > 0 && this.deliveryAddressInfo && name && mobile.length >= 10) {
-                    this.UI.placeOrderBtn.disabled = false;
-                    this.UI.placeOrderBtn.classList.remove('bg-gray-500', 'cursor-not-allowed');
-                    this.UI.placeOrderBtn.classList.add('bg-green-500', 'btn-royal');
+                    this.UI.placeOrderBtn.disabled = false; this.UI.placeOrderBtn.classList.remove('bg-gray-500', 'cursor-not-allowed'); this.UI.placeOrderBtn.classList.add('bg-green-500', 'btn-royal');
                 } else {
-                    this.UI.placeOrderBtn.disabled = true;
-                    this.UI.placeOrderBtn.classList.add('bg-gray-500', 'cursor-not-allowed');
-                    this.UI.placeOrderBtn.classList.remove('bg-green-500', 'btn-royal');
+                    this.UI.placeOrderBtn.disabled = true; this.UI.placeOrderBtn.classList.add('bg-gray-500', 'cursor-not-allowed'); this.UI.placeOrderBtn.classList.remove('bg-green-500', 'btn-royal');
                 }
             },
-
             async placeOrder() {
-                if (this.UI.placeOrderBtn.disabled || !this.db) return;
-                this.UI.placeOrderBtn.textContent = "Placing Order...";
-                this.UI.placeOrderBtn.disabled = true;
-                
+                if (this.UI.placeOrderBtn.disabled || !this.supabase) return;
+                this.UI.placeOrderBtn.textContent = "Placing Order..."; this.UI.placeOrderBtn.disabled = true;
                 const total = this.calculateTotal();
+                const orderId = `RBB-${Date.now().toString().slice(-6)}`;
                 const orderData = {
-                    customerName: this.UI.customerName.value.trim(), customerMobile: this.UI.customerMobile.value.trim(),
-                    addressInfo: this.deliveryAddressInfo, cartItems: this.cart, totalAmount: total, status: "New", 
-                    timestamp: serverTimestamp(), isFlashSaleOrder: this.isOfferActive
+                    order_id: orderId, customer_name: this.UI.customerName.value.trim(), customer_mobile: this.UI.customerMobile.value.trim(),
+                    address_info: this.deliveryAddressInfo, cart_items: this.cart, total_amount: total, status: "New", 
+                    is_flash_sale_order: this.isOfferActive
                 };
-                
                 try {
-                    await addDoc(collection(this.db, "orders"), orderData);
-                    const upiUrl = `upi://pay?pa=sanketchaudhari224-2@oksbi&pn=Royal%20Bucket%20Biryani&am=${total}&cu=INR&tn=Order%20ID%20${Date.now()}`;
+                    const { error } = await this.supabase.from('orders').insert([orderData]);
+                    if (error) throw error;
+                    this.UI.orderIdDisplay.textContent = orderId;
+                    this.UI.trackOrderLink.href = `track.html?orderId=${orderId}`;
+                    this.UI.orderView.style.display = 'none';
+                    this.UI.confirmationView.style.display = 'block';
+                    const upiUrl = `upi://pay?pa=sanketchaudhari224-2@oksbi&pn=Royal%20Bucket%20Biryani&am=${total}&cu=INR&tn=${orderId}`;
                     window.location.href = upiUrl;
-                    alert("Order Placed! You will now be redirected to payment.");
-                    this.resetModal();
                 } catch (e) {
-                    alert(`Could not place order. PLEASE CHECK FIREBASE RULES. Error: ${e.message}`);
-                    this.UI.placeOrderBtn.textContent = "PLACE ORDER & PAY";
-                    this.validateOrderButton();
+                    alert(`Could not place order. PLEASE CHECK SUPABASE SETUP. Error: ${e.message}`);
+                    this.UI.placeOrderBtn.textContent = "PLACE ORDER & PAY"; this.validateOrderButton();
                 }
             },
-
             openCartModal() {
                 this.updateCartUI();
+                this.UI.orderView.style.display = 'block'; this.UI.confirmationView.style.display = 'none';
                 this.UI.cartModal.classList.add('active');
             },
-
             resetModal() {
                 this.UI.cartModal.classList.remove('active');
                 setTimeout(() => {
-                    this.cart.length = 0;
-                    this.deliveryAddressInfo = null;
-                    this.updateCartUI();
+                    this.cart.length = 0; this.deliveryAddressInfo = null; this.updateCartUI();
                     ['customerName', 'customerMobile', 'manualAddressInput'].forEach(k => this.UI[k].value = '');
-                    this.UI.locationStatus.textContent = "";
-                    this.UI.locationStatus.classList.remove('text-green-400');
-                    this.UI.getLocationBtn.textContent = '* ADD DELIVERY ADDRESS';
-                    this.UI.getLocationBtn.disabled = false;
+                    this.UI.locationStatus.textContent = ""; this.UI.locationStatus.classList.remove('text-green-400');
+                    this.UI.getLocationBtn.textContent = '* ADD DELIVERY ADDRESS'; this.UI.getLocationBtn.disabled = false;
                     this.UI.manualAddressSection.classList.add('hidden');
                 }, 500);
             }
         };
-
         App.init();
     </script>
 </body>
