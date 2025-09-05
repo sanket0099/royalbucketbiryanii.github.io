@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - Royal Bucket Biryani</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root { --gold: #D4AF37; --dark-bg: #1a1a1a; --card-bg: #242424; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--dark-bg); color: #f0f0f0; }
+        .font-royal { font-family: 'Cinzel', serif; }
+        .bg-gold-gradient { background-image: linear-gradient(to right, #D4AF37, #C0982E, #D4AF37); }
+        .btn-royal:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3); }
+        .timeline-item.completed .timeline-icon { background-color: #22c55e; color: white; }
+        .timeline-item.completed .timeline-content { opacity: 1; }
+        .timeline-item .timeline-icon { background-color: #4b5563; color: #9ca3af; }
+        .timeline-item .timeline-content { opacity: 0.5; }
+        .timeline-line { background-color: #4b5563; }
+        .timeline-item.completed .timeline-line-active { background-color: #22c55e; transform: scaleY(1); }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-2xl min-h-screen">
+        <header class="text-center mb-8">
+            <a href="index.html" class="text-2xl md:text-3xl font-royal text-gold">Royal Bucket Biryani</a>
+            <h1 class="text-3xl md:text-4xl font-bold mt-2">Track Your Order</h1>
+        </header>
+
+        <main id="tracking-container">
+            <div id="search-view" class="bg-card-bg p-8 rounded-lg shadow-lg">
+                <p class="text-center text-gray-300 mb-4">Enter the Order ID you received after placing your order.</p>
+                <input type="text" id="order-id-input" placeholder="e.g., RBB-123456" class="w-full text-center text-lg bg-[#333] text-white border border-gray-600 rounded-md p-3 uppercase focus:outline-none focus:ring-2 focus:ring-gold">
+                <button id="track-order-btn" class="w-full mt-4 bg-gold-gradient text-black font-bold py-3 px-10 rounded-full text-lg btn-royal">Track Order</button>
+                <p id="track-error" class="text-sm text-red-500 h-4 text-center mt-2"></p>
+            </div>
+            <div id="result-view" class="hidden">
+                <div class="bg-card-bg p-6 rounded-lg shadow-lg mb-6">
+                    <div class="flex justify-between items-center">
+                        <div><p class="text-sm text-gray-400">Order ID</p><p id="result-order-id" class="text-lg font-bold text-gold"></p></div>
+                        <div class="text-right"><p class="text-sm text-gray-400">Total Amount</p><p id="result-total-amount" class="text-lg font-bold"></p></div>
+                    </div>
+                </div>
+                <div id="timeline-container" class="relative pl-8"></div>
+                <div id="delivery-partner-info" class="hidden mt-6 bg-black p-4 rounded-lg border border-dashed border-gold text-center">
+                    <p class="font-royal text-xl text-gold">Delivery Partner Details</p>
+                    <p class="mt-2">Name: <span id="partner-name" class="font-bold"></span></p>
+                    <a id="partner-phone" href="#" class="inline-block mt-2 bg-green-500 text-white font-bold py-2 px-6 rounded-full">Call Partner</a>
+                </div>
+                <div id="map-container" class="hidden mt-6"><div id="delivery-map-display" class="w-full h-64 rounded-lg border-2 border-gold"></div></div>
+                <button id="search-again-btn" class="w-full mt-8 bg-gray-600 text-white font-bold py-3 px-10 rounded-full text-lg btn-royal">Track Another Order</button>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.2/+esm'
+        
+        const supabaseUrl = 'https://fgjcvanldbuwzmkchvxc.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnamN2YW5sZGJ1d3pta2NodnhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNzY4MzAsImV4cCI6MjA3MjY1MjgzMH0.48dOfWo75En4wwg76TyAOEe5BOq7xRE_9I2zeEz_7aU';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        const UI = {
+            searchView: document.getElementById('search-view'), resultView: document.getElementById('result-view'),
+            orderIdInput: document.getElementById('order-id-input'), trackOrderBtn: document.getElementById('track-order-btn'),
+            trackError: document.getElementById('track-error'), resultOrderId: document.getElementById('result-order-id'),
+            resultTotalAmount: document.getElementById('result-total-amount'), timelineContainer: document.getElementById('timeline-container'),
+            deliveryPartnerInfo: document.getElementById('delivery-partner-info'), partnerName: document.getElementById('partner-name'),
+            partnerPhone: document.getElementById('partner-phone'), mapContainer: document.getElementById('map-container'),
+            searchAgainBtn: document.getElementById('search-again-btn'),
+        };
+
+        const STATUSES = ["New", "Preparing", "Out for Delivery", "Completed"];
+        const STATUS_TEXT = {"New": "Order Confirmed", "Preparing": "Preparing Food", "Out for Delivery": "Out for Delivery", "Completed": "Delivered"};
+        
+        UI.trackOrderBtn.addEventListener('click', trackOrder);
+        UI.searchAgainBtn.addEventListener('click', () => {
+            UI.resultView.classList.add('hidden'); UI.searchView.classList.remove('hidden'); UI.orderIdInput.value = '';
+        });
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderIdFromUrl = urlParams.get('orderId');
+        if (orderIdFromUrl) {
+            UI.orderIdInput.value = orderIdFromUrl;
+            trackOrder();
+        }
+
+        async function trackOrder() {
+            const orderId = UI.orderIdInput.value.trim().toUpperCase();
+            if (!orderId) { UI.trackError.textContent = "Please enter an Order ID."; return; }
+            UI.trackError.textContent = ""; UI.trackOrderBtn.textContent = "Searching..."; UI.trackOrderBtn.disabled = true;
+
+            const { data, error } = await supabase.from('orders').select().eq('order_id', orderId).single();
+
+            if (error || !data) {
+                UI.trackError.textContent = "No order found. Please check ID.";
+            } else {
+                displayOrderDetails(data);
+                UI.searchView.classList.add('hidden'); UI.resultView.classList.remove('hidden');
+            }
+            UI.trackOrderBtn.textContent = "Track Order"; UI.trackOrderBtn.disabled = false;
+        }
+
+        function displayOrderDetails(order) {
+            UI.resultOrderId.textContent = order.order_id;
+            UI.resultTotalAmount.textContent = `₹${order.total_amount}`;
+            UI.timelineContainer.innerHTML = '';
+            const currentStatusIndex = STATUSES.indexOf(order.status);
+            
+            STATUSES.forEach((status, index) => {
+                const isCompleted = index <= currentStatusIndex;
+                const item = document.createElement('div');
+                item.className = `timeline-item flex items-start ${isCompleted ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <div class="relative flex-shrink-0"><div class="timeline-icon w-8 h-8 rounded-full flex items-center justify-center font-bold text-lg transition-colors">✓</div>
+                        ${index < STATUSES.length - 1 ? `<div class="timeline-line absolute top-8 left-1/2 -translate-x-1/2 h-12 w-1"><div class="timeline-line-active h-full w-full transition-transform duration-500" style="transform: scaleY(${isCompleted ? 1 : 0}); transform-origin: top;"></div></div>` : ''}
+                    </div><div class="timeline-content ml-4 pb-12 transition-opacity"><p class="font-bold text-lg">${STATUS_TEXT[status]}</p><p class="text-sm text-gray-400">${isCompleted ? 'Completed' : 'Pending'}</p></div>`;
+                UI.timelineContainer.appendChild(item);
+            });
+
+            if (order.status === 'Out for Delivery' && order.delivery_partner_name) {
+                UI.partnerName.textContent = order.delivery_partner_name; UI.partnerPhone.href = `tel:${order.delivery_partner_phone}`;
+                UI.deliveryPartnerInfo.classList.remove('hidden');
+            } else { UI.deliveryPartnerInfo.classList.add('hidden'); }
+            
+            if (order.status === 'Out for Delivery' && order.address_info.mapLink !== 'Not available'){
+                UI.mapContainer.classList.remove('hidden');
+                document.getElementById('delivery-map-display').innerHTML = ""; // Clear previous map
+                const coords = order.address_info.mapLink.split('q=')[1].split(',').map(Number);
+                const map = L.map('delivery-map-display').setView(coords, 15);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+                L.marker([18.5975, 73.9112], {icon: L.icon({ iconUrl: 'https://img.icons8.com/ios-filled/50/D4AF37/crown.png', iconSize: [30,30] }) }).addTo(map).bindPopup('<b>Royal Bucket Biryani</b>');
+                L.marker(coords).addTo(map).bindPopup('<b>Your Location</b>').openPopup();
+            } else { UI.mapContainer.classList.add('hidden'); }
+        }
+    </script>
+</body>
+</html>
+
+
