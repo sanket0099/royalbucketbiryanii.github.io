@@ -282,7 +282,7 @@
                     const upiUrl = `upi://pay?pa=sanketchaudhari224-2@oksbi&pn=Royal%20Bucket%20Biryani&am=${total}&cu=INR&tn=${orderId}`;
                     window.location.href = upiUrl;
                 } catch (e) {
-                    alert(`Could not place order. PLEASE CHECK SUPABASE SETUP. Error: ${e.message}`);
+                    alert(`Could not place order. PLEASE CHECK SUPABASE TABLE SETUP. Error: ${e.message}`);
                     this.UI.placeOrderBtn.textContent = "PLACE ORDER & PAY"; this.validateOrderButton();
                 }
             },
@@ -306,5 +306,4 @@
     </script>
 </body>
 </html>
-
 
