@@ -44,6 +44,13 @@
     <!-- Dashboard Screen (Initially hidden) -->
     <div id="dashboard-screen" class="hidden p-4 md:p-8">
         <header class="flex justify-between items-center mb-8"><h1 class="text-3xl md:text-4xl font-royal text-gold">Live Dashboard</h1><button id="logout-btn" class="text-sm font-semibold bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-full transition-colors">Logout</button></header>
+        
+        <!-- Enable Sound Button -->
+        <div id="sound-prompt" class="hidden bg-blue-900 border border-blue-600 p-4 rounded-lg mb-6 text-center">
+            <p class="mb-2">Sound notifications are currently off.</p>
+            <button id="enable-sound-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Click to Enable Sound</button>
+        </div>
+
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="stat-card p-6 rounded-lg shadow-lg text-center"><p class="text-sm text-gray-400 uppercase">Today's Orders</p><p id="today-orders-stat" class="text-5xl font-royal text-white mt-2">0</p></div>
             <div class="stat-card p-6 rounded-lg shadow-lg text-center"><p class="text-sm text-gray-400 uppercase">Total Revenue</p><p id="total-revenue-stat" class="text-5xl font-royal text-white mt-2">₹0</p></div>
@@ -54,7 +61,7 @@
     
     <script>if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').then(reg => console.log('SW registered')).catch(err => console.log('SW registration failed: ', err)); }); }</script>
     <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.2/+esm'
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.2/+esm';
         
         const supabaseUrl = 'https://fgjcvanldbuwzmkchvxc.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnamN2YW5sZGJ1d3pta2NodnhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNzY4MzAsImV4cCI6MjA3MjY1MjgzMH0.48dOfWo75En4wwg76TyAOEe5BOq7xRE_9I2zeEz_7aU';
@@ -64,26 +71,27 @@
             loginScreen: document.getElementById('login-screen'), dashboardScreen: document.getElementById('dashboard-screen'),
             loginBtn: document.getElementById('login-btn'), logoutBtn: document.getElementById('logout-btn'),
             emailInput: document.getElementById('email'), passwordInput: document.getElementById('password'),
-            loginError: document.getElementById('login-error'), orderListEl: document.getElementById('order-list')
+            loginError: document.getElementById('login-error'), orderListEl: document.getElementById('order-list'),
+            soundPrompt: document.getElementById('sound-prompt'), enableSoundBtn: document.getElementById('enable-sound-btn')
         };
         
-        const synth = new Tone.Synth().toDestination();
+        let synth;
+        let isFirstLoad = true;
         let allOrders = [];
 
-        async function handleLogin() {
-            const { email, password } = { email: UI.emailInput.value, password: UI.passwordInput.value };
-            UI.loginError.textContent = '';
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) UI.loginError.textContent = 'Invalid email or password.';
-        }
-
-        async function handleLogout() {
-            await supabase.auth.signOut();
-        }
+        UI.enableSoundBtn.addEventListener('click', async () => {
+            await Tone.start();
+            synth = new Tone.Synth().toDestination();
+            UI.soundPrompt.style.display = 'none';
+            console.log('Audio context started');
+        });
 
         supabase.auth.onAuthStateChange((event, session) => {
             if (session && event === 'SIGNED_IN') {
                 UI.loginScreen.style.display = 'none'; UI.dashboardScreen.style.display = 'block';
+                if (Tone.context.state !== 'running') {
+                    UI.soundPrompt.style.display = 'block';
+                }
                 listenForOrders();
             }
             if (event === 'SIGNED_OUT') {
@@ -93,11 +101,20 @@
             }
         });
 
+        UI.loginBtn.addEventListener('click', async () => {
+            const { email, password } = { email: UI.emailInput.value, password: UI.passwordInput.value };
+            UI.loginError.textContent = '';
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) UI.loginError.textContent = 'Invalid email or password.';
+        });
+
+        UI.logoutBtn.addEventListener('click', () => supabase.auth.signOut());
+
         function listenForOrders() {
             supabase.channel('public:orders')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => {
                     fetchAndRenderOrders();
-                    if(payload.eventType === 'INSERT' && document.visibilityState === 'visible') {
+                    if(payload.eventType === 'INSERT' && document.visibilityState === 'visible' && synth) {
                         try { synth.triggerAttackRelease("C5", "8n"); } catch (e) {}
                     }
                 })
@@ -105,13 +122,21 @@
             fetchAndRenderOrders(true);
         }
         
-        async function fetchAndRenderOrders(isFirstLoad = false) {
-            const { data: orders, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+        async function fetchAndRenderOrders() {
+            const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
             if (error) { console.error("Error fetching orders:", error); return; }
-            allOrders = orders;
+            allOrders = data;
             updateStats(allOrders);
             UI.orderListEl.innerHTML = allOrders.length === 0 ? '<p class="text-center text-gray-500">No orders yet.</p>' : '';
-            allOrders.forEach(order => UI.orderListEl.appendChild(createOrderCard(order)));
+            allOrders.forEach(order => {
+                const existingCard = document.getElementById(`order-${order.id}`);
+                const newCard = createOrderCard(order);
+                if(existingCard) {
+                    existingCard.replaceWith(newCard);
+                } else {
+                    UI.orderListEl.appendChild(newCard);
+                }
+            });
         }
 
         function updateStats(orders) {
@@ -162,11 +187,7 @@
                 } else { alert("Please enter partner name and phone number."); }
             }
         });
-
-        UI.loginBtn.addEventListener('click', handleLogin);
-        UI.logoutBtn.addEventListener('click', handleLogout);
     </script>
 </body>
 </html>
-
 
